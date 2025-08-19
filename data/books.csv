@@ -1,0 +1,92 @@
+Title,Author,Year,Units,Genres,BorrowHistory
+The Hobbit,J.R.R. Tolkien,1937,5,Fantasy;Adventure,student1;student2
+1984,George Orwell,1949,3,Dystopian;Political;Classic,student3;student4;student5
+Pride and Prejudice,Jane Austen,1813,4,Romance;Classic,student6;student7
+To Kill a Mockingbird,Harper Lee,1960,6,Classic;Historical;Drama,student1;student3
+The Great Gatsby,F. Scott Fitzgerald,1925,2,Classic;Tragedy;American,student2;student4;student5
+Moby-Dick,Herman Melville,1851,3,Adventure;Classic,student6;student1
+War and Peace,Leo Tolstoy,1869,2,Historical;Classic;Epic,student2;student3
+Crime and Punishment,Fyodor Dostoevsky,1866,4,Philosophical;Classic,student5;student7
+The Catcher in the Rye,J.D. Salinger,1951,5,Classic;Coming-of-Age,student1;student2
+Brave New World,Aldous Huxley,1932,3,Dystopian;Science Fiction,student4;student6
+Jane Eyre,Charlotte Brontë,1847,4,Romance;Classic;Gothic,student7;student3
+Wuthering Heights,Emily Brontë,1847,2,Gothic;Romance;Classic,student1;student5
+The Odyssey,Homer,-800,5,Mythology;Epic,student2;student4;student6
+The Iliad,Homer,-762,3,Mythology;Epic,student7;student1
+The Divine Comedy,Dante Alighieri,1320,2,Poetry;Classic;Religious,student3;student5
+Hamlet,William Shakespeare,1603,6,Drama;Tragedy;Classic,student2;student7
+Macbeth,William Shakespeare,1606,5,Drama;Tragedy;Classic,student1;student6
+Othello,William Shakespeare,1603,4,Drama;Tragedy;Classic,student4;student5
+King Lear,William Shakespeare,1606,3,Drama;Tragedy;Classic,student3;student7
+Romeo and Juliet,William Shakespeare,1597,5,Drama;Romance;Classic,student6;student1
+Frankenstein,Mary Shelley,1818,3,Horror;Gothic;Classic,student2;student3
+Dracula,Bram Stoker,1897,2,Horror;Gothic,student5;student7
+A Tale of Two Cities,Charles Dickens,1859,4,Classic;Historical,student4;student6
+Great Expectations,Charles Dickens,1861,5,Classic;Coming-of-Age,student1;student3
+David Copperfield,Charles Dickens,1850,3,Classic;Drama,student7;student2
+Oliver Twist,Charles Dickens,1838,6,Classic;Drama,student5;student6
+Les Misérables,Victor Hugo,1862,4,Classic;Historical,student3;student4
+The Count of Monte Cristo,Alexandre Dumas,1844,3,Adventure;Classic,student2;student7
+The Three Musketeers,Alexandre Dumas,1844,2,Adventure;Classic,student1;student5
+Don Quixote,Miguel de Cervantes,1605,5,Classic;Satire,student6;student4
+Ulysses,James Joyce,1922,2,Modernist;Classic,student7;student3
+The Sound and the Fury,William Faulkner,1929,3,Modernist;Classic,student1;student2
+As I Lay Dying,William Faulkner,1930,4,Modernist;Classic,student5;student7
+The Grapes of Wrath,John Steinbeck,1939,5,Classic;Historical,student2;student6
+Of Mice and Men,John Steinbeck,1937,3,Classic;Drama,student1;student3
+East of Eden,John Steinbeck,1952,4,Classic;Drama,student4;student7
+The Old Man and the Sea,Ernest Hemingway,1952,2,Classic;Adventure,student6;student5
+A Farewell to Arms,Ernest Hemingway,1929,3,Classic;War,student1;student2
+For Whom the Bell Tolls,Ernest Hemingway,1940,4,Classic;War,student7;student3
+The Sun Also Rises,Ernest Hemingway,1926,5,Classic;Drama,student4;student6
+Lolita,Vladimir Nabokov,1955,3,Modernist;Controversial,student2;student5
+Anna Karenina,Leo Tolstoy,1877,4,Classic;Romance,student7;student1
+Madame Bovary,Gustave Flaubert,1856,2,Classic;Romance,student3;student6
+Fathers and Sons,Ivan Turgenev,1862,3,Classic;Philosophical,student5;student2
+The Brothers Karamazov,Fyodor Dostoevsky,1880,4,Classic;Philosophical,student1;student7
+Notes from Underground,Fyodor Dostoevsky,1864,2,Classic;Philosophical,student6;student3
+The Stranger,Albert Camus,1942,3,Classic;Philosophical,student4;student5
+The Plague,Albert Camus,1947,5,Classic;Philosophical,student1;student2
+The Trial,Franz Kafka,1925,2,Classic;Philosophical,student3;student7
+The Metamorphosis,Franz Kafka,1915,3,Classic;Surreal,student4;student6
+In Search of Lost Time,Marcel Proust,1913,2,Classic;Modernist,student2;student5
+One Hundred Years of Solitude,Gabriel García Márquez,1967,4,Magical Realism;Classic,student6;student1
+Love in the Time of Cholera,Gabriel García Márquez,1985,3,Romance;Magical Realism,student7;student2
+The Alchemist,Paulo Coelho,1988,5,Philosophical;Adventure,student3;student4
+The Name of the Rose,Umberto Eco,1980,2,Mystery;Historical,student5;student6
+Foucault's Pendulum,Umberto Eco,1988,3,Mystery;Philosophical,student7;student1
+The Kite Runner,Khaled Hosseini,2003,6,Drama;Historical,student2;student3
+A Thousand Splendid Suns,Khaled Hosseini,2007,5,Drama;Historical,student4;student7
+Norwegian Wood,Haruki Murakami,1987,3,Romance;Drama,student5;student1
+Kafka on the Shore,Haruki Murakami,2002,4,Surreal;Philosophical,student6;student2
+1Q84,Haruki Murakami,2009,3,Dystopian;Surreal,student7;student4
+The Wind-Up Bird Chronicle,Haruki Murakami,1994,2,Surreal;Mystery,student1;student5
+The Road,Cormac McCarthy,2006,3,Dystopian;Post-Apocalyptic,student2;student6
+Blood Meridian,Cormac McCarthy,1985,2,Western;Classic,student7;student3
+No Country for Old Men,Cormac McCarthy,2005,4,Crime;Thriller,student5;student4
+The Shining,Stephen King,1977,5,Horror;Thriller,student1;student6
+It,Stephen King,1986,3,Horror;Thriller,student2;student7
+Misery,Stephen King,1987,2,Horror;Thriller,student3;student5
+Carrie,Stephen King,1974,4,Horror;Thriller,student6;student4
+Pet Sematary,Stephen King,1983,3,Horror;Thriller,student7;student1
+The Stand,Stephen King,1978,5,Horror;Post-Apocalyptic,student2;student5
+The Outsider,Stephen King,2018,3,Horror;Thriller,student4;student6
+Dune,Frank Herbert,1965,4,Science Fiction;Epic,student1;student7
+Dune Messiah,Frank Herbert,1969,2,Science Fiction;Epic,student3;student6
+Children of Dune,Frank Herbert,1976,3,Science Fiction;Epic,student5;student2
+Foundation,Isaac Asimov,1951,4,Science Fiction;Classic,student7;student4
+Foundation and Empire,Isaac Asimov,1952,3,Science Fiction;Classic,student2;student6
+Second Foundation,Isaac Asimov,1953,2,Science Fiction;Classic,student1;student5
+I, Robot,Isaac Asimov,1950,4,Science Fiction;Classic,student3;student7
+Neuromancer,William Gibson,1984,3,Cyberpunk;Science Fiction,student6;student2
+Count Zero,William Gibson,1986,2,Cyberpunk;Science Fiction,student1;student4
+Mona Lisa Overdrive,William Gibson,1988,3,Cyberpunk;Science Fiction,student5;student7
+Snow Crash,Neal Stephenson,1992,4,Cyberpunk;Science Fiction,student2;student6
+Cryptonomicon,Neal Stephenson,1999,3,Thriller;Cyberpunk,student7;student1
+The Diamond Age,Neal Stephenson,1995,2,Science Fiction;Cyberpunk,student3;student5
+Good Omens,Neil Gaiman & Terry Pratchett,1990,4,Comedy;Fantasy,student6;student4
+American Gods,Neil Gaiman,2001,5,Fantasy;Mythology,student1;student2
+Coraline,Neil Gaiman,2002,3,Fantasy;Horror,student5;student7
+Stardust,Neil Gaiman,1999,4,Fantasy;Romance,student3;student6
+Neverwhere,Neil Gaiman,1996,2,Fantasy;Urban,student2;student4
+The Sandman,Neil Gaiman,1989,5,Fiction;Fantasy;Comics,student1;student7
