@@ -15,5 +15,6 @@ struct Book {
 };
 
 vector<string> split(const string &s, char delimiter);
+vector<Book> loadBooks(const string &filename); 
 
 #endif

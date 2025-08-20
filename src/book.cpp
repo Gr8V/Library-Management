@@ -1,5 +1,6 @@
-#include <book.h>
+#include "../include/book.h"
 #include <sstream>
+#include <fstream>
 
 vector<string> split(const string &s, char delimiter)
 {
@@ -11,4 +12,10 @@ vector<string> split(const string &s, char delimiter)
         tokens.push_back(token);
     }
     return tokens;
+}
+
+vector<Book> loadBooks(const string &filename)
+{
+    
+
 }

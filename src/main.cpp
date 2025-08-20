@@ -1,20 +1,49 @@
 #include <iostream>
+#include "../include/book.h"
+#include "../include/library.h"
+#include <fstream>
+#include <vector>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
-string users[] = {"student1", "student2", "student3", "student4", "student5", "student6", "student7"};
+vector<string> users;
 bool isAdmin = false;
 
 void UserLogin();
+vector<string> GetUsers(const string path);
+
+vector<string> split(const string &s, char delimiter)
+{
+    vector<string> tokens;
+    string token;
+    stringstream ss(s);
+    while (getline(ss, token, delimiter))
+    {
+        tokens.push_back(token);
+    }
+    return tokens;
+}
 
 int main()
 {
+    users = GetUsers("../data/users.txt");
     UserLogin();
-
+    actions(isAdmin);
+    
 
     cout << '\n';
     return 0;
+}
+
+vector<string> GetUsers(const string path)
+{
+    string text;
+    vector<string> users;
+    ifstream ReadFile(path);
+    getline(ReadFile, text);
+    return split(text, ',');
 }
 
 void UserLogin()
@@ -31,7 +60,7 @@ void UserLogin()
         cin >> username;
 
         //checks if user is in the users[] global array
-        for (int i = 0; i < sizeof(users)/sizeof(users[0]); i++)
+        for (int i = 0; i < users.size(); i++)
         {
             if (users[i] == username)
             {
