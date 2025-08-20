@@ -11,26 +11,18 @@ using namespace std;
 vector<string> users;
 bool isAdmin = false;
 
-void UserLogin();
+bool UserLogin();
 vector<string> GetUsers(const string path);
-
-vector<string> split(const string &s, char delimiter)
-{
-    vector<string> tokens;
-    string token;
-    stringstream ss(s);
-    while (getline(ss, token, delimiter))
-    {
-        tokens.push_back(token);
-    }
-    return tokens;
-}
 
 int main()
 {
-    users = GetUsers("../data/users.txt");
-    UserLogin();
-    actions(isAdmin);
+    users = GetUsers("data/users.txt");
+    bool isLogin = UserLogin();
+    if (isLogin) actions(isAdmin);
+
+
+    vector<Book> books = loadBooks("data/books.csv");
+
     
 
     cout << '\n';
@@ -46,7 +38,7 @@ vector<string> GetUsers(const string path)
     return split(text, ',');
 }
 
-void UserLogin()
+bool UserLogin()
 {
     bool isLogin = false;
     bool isValidUser = false;
@@ -98,8 +90,9 @@ void UserLogin()
             cout << "Not a Valid User.\n";
         }
         
-        cout << "*******************************************\n";
+        cout << "\n";
     } while (isLogin == false);
     
+    return isLogin;
 
 }

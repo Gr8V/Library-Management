@@ -1,7 +1,7 @@
 #ifndef LIBRARY_H
 #define LIBRARY_H
 
-#include "../include/book.h"
+#include "book.h"
 #include <vector>
 #include <string>
 using namespace std;
@@ -11,13 +11,22 @@ void adminActions();
 void userActions();
 
 //admin functions
-void addbook(string bookName);
+void addbook();
 void editbooks();
 void searchbooks();
-void addUsers();
+
+void addUser();
+void removeUser();
+void viewAllUsers();
+void showOverdueUsers();
 
 //user functions
 void borrowBook();
+void returnBook();
+
+//common functions
+void viewAllBooks();
+
 
 
 #endif
