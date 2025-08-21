@@ -26,7 +26,6 @@ vector<Book> loadBooks(const string &filename)
 
     string line;
     getline(file, line); // discard header line
-    cout << "Discarded header: " << line << endl;
 
     while (getline(file, line))
     {
@@ -55,4 +54,41 @@ vector<Book> loadBooks(const string &filename)
     }
 
     return books;
+}
+
+void writeBooks(const string &filename, const vector<Book> &books)
+{
+    ofstream file(filename);
+    if(!file.is_open())
+    {
+        cout << "FATAL ERROR : Could Not Open Books.csv For Writing";
+        return;
+    }
+
+    file << "Title,Author,Year,Units,Genres,BorrowHistory\n";
+
+    for (const auto &book : books)
+    {
+        string borrowHis;
+        string gen;
+
+        for (int i = 0; i < book.genres.size(); i++)
+        {
+            gen+= book.genres[i];
+            if(i != book.genres.size()-1) gen+=";";        
+        }
+        for (int i = 0; i < book.borrowHistory.size(); i++)
+        {
+            borrowHis+= book.borrowHistory[i];
+            if(i != book.borrowHistory.size()-1) borrowHis+=";";        
+        }
+
+        file << book.title << ","
+            << book.author << ","
+            << book.year << ","
+            << book.units << ","
+            << gen << ","
+            << borrowHis << '\n';
+        }
+    file.close();
 }

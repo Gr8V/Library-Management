@@ -23,8 +23,9 @@ int main()
 
     vector<Book> books = loadBooks("data/books.csv");
 
-    
 
+    //Ending tasks
+    writeBooks("data/books.csv", books);
     cout << '\n';
     return 0;
 }
