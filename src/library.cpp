@@ -4,20 +4,20 @@
 #include <string>
 using namespace std;
 
-void actions(const bool isAdmin)
+void actions(const bool isAdmin, vector<Book> &books, vector<string> &users)
 {
     if (isAdmin)
     {
-        adminActions();
+        adminActions(books, users);
     }
     else if (!isAdmin)
     {
-        userActions();
+        userActions(books);
     }
     
     
 }
-void adminActions()
+void adminActions(vector<Book> &books, vector<string> &users)
 {
     int userInput = 0;
 
@@ -39,35 +39,35 @@ void adminActions()
     switch (userInput)
     {
     case 1:
-        addbook();
+        addbook(books);
         break;
     case 2:
-        editbooks();
+        editbooks(books);
         break;
     case 3:
-        searchbooks();
+        searchbooks(books);
         break;
     case 4:
-        viewAllBooks();
+        viewAllBooks(books);
         break;
     case 5:
-        addUser();
+        addUser(users);
         break;
     case 6:
-        removeUser();
+        removeUser(users);
         break;
     case 7:
-        viewAllUsers();
+        viewAllUsers(users);
         break;
     case 8:
-        showOverdueUsers();
+        showOverdueUsers(users);
         break;
     default:
         cout << "Input Error: Enter a digit between 1-8.";
         break;
     }
 }
-void userActions()
+void userActions(vector<Book> &books)
 {
     int userInput = 0;
 
@@ -83,13 +83,13 @@ void userActions()
     switch (userInput)
     {
     case 1:
-        borrowBook();
+        borrowBook(books);
         break;
     case 2:
-        viewAllBooks();
+        viewAllBooks(books);
         break;
     case 3:
-        returnBook();
+        returnBook(books);
         break;
     default:
         cout << "Input Error: Enter a digit between 1-3.";
@@ -98,47 +98,47 @@ void userActions()
 }
 
 //admin functions
-void addbook()
+void addbook(vector<Book> &books)
 {
     cout << "Adding A Book";
 }
-void editbooks()
+void editbooks(vector<Book> &books)
 {
     cout << "Editing A Book";
 }
-void searchbooks()
+void searchbooks(vector<Book> &books)
 {
     cout << "Searching A Book";
 }
-void addUser()
+void addUser(vector<string> &users)
 {
     cout << "Adding A User";
 }
-void removeUser()
+void removeUser(vector<string> &users)
 {
     cout << "Removing A User";
 }
-void viewAllUsers()
+void viewAllUsers(vector<string> &users)
 {
     cout << "Viewing All Users";
 }
-void showOverdueUsers()
+void showOverdueUsers(vector<string> &users)
 {
     cout << "Showing Overdue Users";
 }
 
 //user functions
-void borrowBook()
+void borrowBook(vector<Book> &books)
 {
     cout << "Borrowing A Book";
 }
-void returnBook()
+void returnBook(vector<Book> &books)
 {
     cout << "Returning A Book";
 }
 
 //common functions
-void viewAllBooks()
+void viewAllBooks(vector<Book> &books)
 {
     cout << "Viewing All Book";
 }

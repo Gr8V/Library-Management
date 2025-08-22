@@ -8,20 +8,22 @@
 
 using namespace std;
 
-vector<string> users;
 bool isAdmin = false;
 
-bool UserLogin();
+bool UserLogin(vector<string> &users);
 vector<string> GetUsers(const string path);
 
 int main()
 {
+    vector<string> users;
     users = GetUsers("data/users.txt");
-    bool isLogin = UserLogin();
-    if (isLogin) actions(isAdmin);
-
-
+    bool isLogin = UserLogin(users);
     vector<Book> books = loadBooks("data/books.csv");
+
+
+    if (isLogin) actions(isAdmin, books, users);
+
+
 
 
     //Ending tasks
@@ -39,7 +41,7 @@ vector<string> GetUsers(const string path)
     return split(text, ',');
 }
 
-bool UserLogin()
+bool UserLogin(vector<string> &users)
 {
     bool isLogin = false;
     bool isValidUser = false;
