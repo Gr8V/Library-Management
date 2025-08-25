@@ -17,5 +17,6 @@ struct Book {
 vector<string> split(const string &s, char delimiter);
 vector<Book> loadBooks(const string &filename);
 void writeBooks(const string &filename, const vector<Book> &books);
+void saveUsers(vector<string> &users, const string path);
 
 #endif

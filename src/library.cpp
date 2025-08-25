@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
@@ -320,43 +321,35 @@ void addUser(vector<string> &users)
     string newUser;
     cout << "Enter Name Of New User: ";
     cin >> newUser;
-
-    //appends new user
-    string text;
-    ifstream ReadFile("data/users.txt");
-    if (ReadFile.is_open())
-    {
-        getline(ReadFile >> ws, text);
-        ReadFile.close();
-    }
-    else
-    {
-        cout << "Failed to open file for reading!\n";
-        return;
-    }
-    text+=","+newUser;
-
-    //Write to file
-    ofstream WriteFile("data/users.txt");
-    if (WriteFile.is_open())
-    {
-        WriteFile << text;
-        WriteFile.close();
-        cout << "User Added!";
-    }
-    else
-    {
-        cout << "Failed to open file for writing!\n";
-    }
     users.push_back(newUser);
+
+    //Save Data
+    saveUsers(users, "data/users.txt");
 }
 void removeUser(vector<string> &users)
 {
+    //Get User To Remove
+    string userToRemove;
+    cout << "Enter Name Of User To Remove: ";
+    cin >> userToRemove;
+    users.erase(remove(users.begin(), users.end(), userToRemove), users.end());
+
     cout << "Removing A User";
+
+    //Save Data
+    saveUsers(users, "data/users.txt");
 }
 void viewAllUsers(vector<string> &users)
 {
-    cout << "Viewing All Users";
+    //View Users
+    cout << "USERS -->\n";
+    for(string user: users)
+    {
+        cout << user << '\n';
+    }
+    cout << "Press Enter To Continue...";
+    string wait;
+    cin >> wait;
 }
 void showOverdueUsers(vector<string> &users)
 {

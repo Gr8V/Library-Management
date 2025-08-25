@@ -92,3 +92,23 @@ void writeBooks(const string &filename, const vector<Book> &books)
         }
     file.close();
 }
+
+void saveUsers(vector<string> &users, const string path)
+{
+    ofstream writeFile(path);
+    if(!writeFile)
+    {
+        cout << "Error Opening File For Writing";
+        return;
+    }
+
+    for (size_t i = 0; i < users.size(); i++)
+    {
+        writeFile << users[i];
+        if (i != users.size()-1)
+        {
+            writeFile << ",";
+        }
+    }
+    writeFile.close();
+}

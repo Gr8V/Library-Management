@@ -36,11 +36,9 @@ int main()
     }
     
 
-
-
-
     //Save Data
     writeBooks("data/books.csv", books);
+    saveUsers(users, "data/users.txt");
     cout << '\n';
     return 0;
 }
