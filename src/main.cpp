@@ -8,6 +8,7 @@
 
 using namespace std;
 
+//Global Variables
 bool isAdmin = false;
 
 bool UserLogin(vector<string> &users);

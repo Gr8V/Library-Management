@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <limits>
+
 using namespace std;
 
 void titleCase(string &title)
@@ -125,7 +125,6 @@ void addbook(vector<Book> &books)
 
     cout << "Enter Units : ";
     cin >> newBook.units;
-    cin.ignore(numeric_limits<streamsize>::max(), '\n'); // clear input buffer
     
     //genres
     int genreNum = 1;
@@ -133,7 +132,7 @@ void addbook(vector<Book> &books)
     {
         string genre;
         cout << "Enter Genre-" << genreNum << " (leave blank to stop): ";
-        getline(cin, genre);
+        getline(cin >> ws, genre);
         if (genre.empty())
         {
             break;
@@ -250,11 +249,80 @@ void editbooks(vector<Book> &books)
 }
 void searchbooks(vector<Book> &books)
 {
-    cout << "Searching A Book";
+    Book bookToSearch;
+    string bookTitle;
+
+    cout << "Enter Title Of Book To Search : ";
+    getline(cin >> ws, bookTitle);
+    titleCase(bookTitle);
+    for (int i = 0; i < books.size(); i++)
+    {
+        if (books[i].title == bookTitle)
+        {
+            bookToSearch = books[i];
+        }
+    }
+    if (bookToSearch.title == "" && bookToSearch.author == "")
+    {
+        cout << "Book Not Found!!!\n";
+    }
+    else
+    {
+        cout << "Book Found: " << bookToSearch.title << " by " << bookToSearch.author << ".\n";
+        cout << "            Published in the year " << bookToSearch.year << ".\n";
+        cout << "            Genres: ";
+        for (int i = 0; i < bookToSearch.genres.size(); i++)
+        {
+            cout << bookToSearch.genres[i];
+            if(i != bookToSearch.genres.size()-1) cout << ", ";
+        }
+        
+        cout << '\n';
+        cout << "            Units Availabe: " << bookToSearch.units << ".\n";
+        cout << "            Borrowed By: ";
+        for (int i = 0; i < bookToSearch.borrowHistory.size(); i++)
+        {
+            cout << bookToSearch.borrowHistory[i];
+            if(i != bookToSearch.borrowHistory.size()-1) cout << ", ";
+        }
+        cout << '\n';
+    }
 }
 void addUser(vector<string> &users)
 {
-    cout << "Adding A User";
+    //Get New User
+    string newUser;
+    cout << "Enter Name Of New User: ";
+    cin >> newUser;
+
+    //appends new user
+    string text;
+    ifstream ReadFile("data/users.txt");
+    if (ReadFile.is_open())
+    {
+        getline(ReadFile >> ws, text);
+        ReadFile.close();
+    }
+    else
+    {
+        cout << "Failed to open file for reading!\n";
+        return;
+    }
+    text+=","+newUser;
+
+    //Write to file
+    ofstream WriteFile("data/users.txt");
+    if (WriteFile.is_open())
+    {
+        WriteFile << text;
+        WriteFile.close();
+        cout << "User Added!";
+    }
+    else
+    {
+        cout << "Failed to open file for writing!\n";
+    }
+    users.push_back(newUser);
 }
 void removeUser(vector<string> &users)
 {
