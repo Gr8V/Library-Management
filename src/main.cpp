@@ -22,12 +22,24 @@ int main()
     vector<Book> books = loadBooks("data/books.csv");
 
 
-    if (isLogin) actions(isAdmin, books, users);
+    while (true)
+    {
+        if (isLogin)
+        {
+            if (actions(isAdmin, books, users))
+            {
+                cout << "Exiting Program";
+                break;
+            }
+            
+        }
+    }
+    
 
 
 
 
-    //Ending tasks
+    //Save Data
     writeBooks("data/books.csv", books);
     cout << '\n';
     return 0;

@@ -15,23 +15,31 @@ void titleCase(string &title)
     }
 }
 
-void actions(const bool isAdmin, vector<Book> &books, vector<string> &users)
+bool actions(const bool isAdmin, vector<Book> &books, vector<string> &users)
 {
     cout << "*********************************\n";
     cout << "*************Actions*************\n";
     cout << "*********************************\n";
     if (isAdmin)
     {
-        adminActions(books, users);
+        if (adminActions(books, users))
+        {
+            return true;
+        }
+        
     }
     else if (!isAdmin)
     {
-        userActions(books);
+        if (userActions(books))
+        {
+            return true;
+        }
+        
     }
     
-    
+    return false;
 }
-void adminActions(vector<Book> &books, vector<string> &users)
+bool adminActions(vector<Book> &books, vector<string> &users)
 {
     int userInput = 0;
 
@@ -45,6 +53,7 @@ void adminActions(vector<Book> &books, vector<string> &users)
     cout << "[6] Remove User\n";
     cout << "[7] View All Users\n";
     cout << "[8] Show Overdue Users\n";
+    cout << "[9] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
     cout << '\n';
@@ -75,18 +84,23 @@ void adminActions(vector<Book> &books, vector<string> &users)
     case 8:
         showOverdueUsers(users);
         break;
+    case 9:
+        return true;
+        break;
     default:
         cout << "Input Error: Enter a digit between 1-8.";
         break;
     }
+    return false;
 }
-void userActions(vector<Book> &books)
+bool userActions(vector<Book> &books)
 {
     int userInput = 0;
 
     cout << "[1] Borrow Book\n";
     cout << "[2] View All Book\n";
     cout << "[3] Return Book\n";
+    cout << "[4] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
     cout << '\n';
@@ -102,10 +116,14 @@ void userActions(vector<Book> &books)
     case 3:
         returnBook(books);
         break;
+    case 4:
+        return true;
+        break;
     default:
         cout << "Input Error: Enter a digit between 1-3.";
         break;
     }
+    return false;
 }
 
 //admin functions
@@ -128,11 +146,13 @@ void addbook(vector<Book> &books)
     
     //genres
     int genreNum = 1;
+    string garbage;
+    getline(cin, garbage);
     while (true)
     {
         string genre;
         cout << "Enter Genre-" << genreNum << " (leave blank to stop): ";
-        getline(cin >> ws, genre);
+        getline(cin, genre);
         if (genre.empty())
         {
             break;
@@ -145,6 +165,9 @@ void addbook(vector<Book> &books)
     newBook.borrowHistory.push_back("None");
     books.push_back(newBook);
     cout << "Adding A Book";
+
+    //Save Data
+    writeBooks("data/books.csv", books);
 }
 void editbooks(vector<Book> &books)
 {
@@ -246,6 +269,9 @@ void editbooks(vector<Book> &books)
 
     books[indexEdited] = bookToEdit;
     cout << "Editing A Book";
+
+    //Save Data
+    writeBooks("data/books.csv", books);
 }
 void searchbooks(vector<Book> &books)
 {
@@ -341,10 +367,16 @@ void showOverdueUsers(vector<string> &users)
 void borrowBook(vector<Book> &books)
 {
     cout << "Borrowing A Book";
+
+    //Save Data
+    writeBooks("data/books.csv", books);
 }
 void returnBook(vector<Book> &books)
 {
     cout << "Returning A Book";
+
+    //Save Data
+    writeBooks("data/books.csv", books);
 }
 
 //common functions

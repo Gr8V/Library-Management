@@ -6,9 +6,9 @@
 #include <string>
 using namespace std;
 
-void actions(const bool isAdmin, vector<Book> &books, vector<string> &users);
-void adminActions(vector<Book> &books, vector<string> &users);
-void userActions(vector<Book> &books);
+bool actions(const bool isAdmin, vector<Book> &books, vector<string> &users);
+bool adminActions(vector<Book> &books, vector<string> &users);
+bool userActions(vector<Book> &books);
 
 //admin functions
 void addbook(vector<Book> &books);
