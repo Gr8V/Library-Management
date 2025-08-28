@@ -8,16 +8,16 @@
 
 using namespace std;
 
-//Global Variables
-bool isAdmin = false;
-
-bool UserLogin(vector<User> &users);
+bool UserLogin(vector<User> &users, bool &isAdmin, string &username);
 
 int main()
 {
+    bool isAdmin = false;
+    string username;
+
     //Load Data
     vector<User> users = loadUsers("data/users.csv");
-    bool isLogin = UserLogin(users);
+    bool isLogin = UserLogin(users, isAdmin, username);
     vector<Book> books = loadBooks("data/books.csv");
     
 
@@ -26,7 +26,7 @@ int main()
     {
         if (isLogin)
         {
-            if (actions(isAdmin, books, users))
+            if (actions(isAdmin, books, users, username))
             {
                 cout << "Exiting Program";
                 break;
@@ -43,11 +43,10 @@ int main()
     return 0;
 }
 
-bool UserLogin(vector<User> &users)
+bool UserLogin(vector<User> &users, bool &isAdmin, string &username)
 {
     bool isLogin = false;
     bool isValidUser = false;
-    string username;
     string inputPasswd;
     const string adminPasswd = "qwerty";
 

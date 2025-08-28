@@ -7,9 +7,9 @@
 #include <string>
 using namespace std;
 
-bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users);
+bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users, const string &username);
 bool adminActions(vector<Book> &books, vector<User> &users);
-bool userActions(vector<Book> &books, vector<User> &users);
+bool userActions(vector<Book> &books, vector<User> &users, const string &username);
 
 //admin functions
 void addbook(vector<Book> &books);
@@ -22,8 +22,8 @@ void viewAllUsers(vector<User> &users);
 void showOverdueUsers(vector<User> &users);
 
 //user functions
-void borrowBook(vector<Book> &books, vector<User> &users);
-void returnBook(vector<Book> &books, vector<User> &users);
+void borrowBook(vector<Book> &books, vector<User> &users, const string &username);
+void returnBook(vector<Book> &books, vector<User> &users, const string &username);
 
 //common functions
 void viewAllBooks(vector<Book> &books);

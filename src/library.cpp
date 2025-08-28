@@ -16,7 +16,7 @@ void titleCase(string &title)
     }
 }
 
-bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users)
+bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users, const string &username)
 {
     cout << "*********************************\n";
     cout << "*************Actions*************\n";
@@ -31,7 +31,7 @@ bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users)
     }
     else if (!isAdmin)
     {
-        if (userActions(books, users))
+        if (userActions(books, users, username))
         {
             return true;
         }
@@ -94,7 +94,7 @@ bool adminActions(vector<Book> &books, vector<User> &users)
     }
     return false;
 }
-bool userActions(vector<Book> &books, vector<User> &users)
+bool userActions(vector<Book> &books, vector<User> &users, const string &username)
 {
     int userInput = 0;
 
@@ -109,13 +109,13 @@ bool userActions(vector<Book> &books, vector<User> &users)
     switch (userInput)
     {
     case 1:
-        borrowBook(books, users);
+        borrowBook(books, users, username);
         break;
     case 2:
         viewAllBooks(books);
         break;
     case 3:
-        returnBook(books, users);
+        returnBook(books, users, username);
         break;
     case 4:
         return true;
@@ -380,14 +380,79 @@ void showOverdueUsers(vector<User> &users)
 }
 
 //user functions
-void borrowBook(vector<Book> &books, vector<User> &users)
+void borrowBook(vector<Book> &books, vector<User> &users, const string &username)
 {
-    cout << "Borrowing A Book";
+    int borrowBookId;
+    int indexToBorrow;
+    int indexOfUser;
+    Book bookToBorrow;
+    User currentUser;
+    for (size_t i = 0; i < users.size(); i++)
+    {
+        if (users[i].studentName == username)
+        {
+            currentUser = users[i];
+            indexOfUser = i;
+        }
+    }
+    cout << "Enter The Id Of Book You Want To Borrow : ";
+    cin >> borrowBookId;
 
+    //gets book to borrow
+    for (size_t i = 0; i < books.size(); i++)
+    {
+        if (books[i].bookId == borrowBookId)
+        {
+            bookToBorrow = books[i];
+            indexToBorrow = i;
+        }
+    }
+
+    if (bookToBorrow.units == 0)
+    {
+        cout << "The Book Is Out Of Stock\n\n";
+        return;
+    }
+    
+
+    if (currentUser.book1Id == 0)
+    {
+        currentUser.book1Id = bookToBorrow.bookId;
+        bookToBorrow.units--;
+    }
+    else if (currentUser.book2Id == 0)
+    {
+        currentUser.book2Id = bookToBorrow.bookId;
+        bookToBorrow.units--;
+    }
+    else if (currentUser.book3Id == 0)
+    {
+        currentUser.book3Id = bookToBorrow.bookId;
+        bookToBorrow.units--;
+    }
+    else if (currentUser.book4Id == 0)
+    {
+        currentUser.book4Id = bookToBorrow.bookId;
+        bookToBorrow.units--;
+    }
+    else if (currentUser.book5Id == 0)
+    {
+        currentUser.book5Id = bookToBorrow.bookId;
+        bookToBorrow.units--;
+    }
+    else
+    {
+        cout << "You Already Borrowed 5 Books\n";
+        cout << "You Can't Borrow Any More Books Till You Return Any Other Books";
+    }
+    
     //Save Data
+    users[indexOfUser] = currentUser;
+    books[indexToBorrow] = bookToBorrow;
+    writeUsers("data/users.csv", users);
     writeBooks("data/books.csv", books);
 }
-void returnBook(vector<Book> &books, vector<User> &users)
+void returnBook(vector<Book> &books, vector<User> &users, const string &username)
 {
     cout << "Returning A Book";
 
