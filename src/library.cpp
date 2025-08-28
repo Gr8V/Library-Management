@@ -16,7 +16,7 @@ void titleCase(string &title)
     }
 }
 
-bool actions(const bool isAdmin, vector<Book> &books, vector<string> &users)
+bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users)
 {
     cout << "*********************************\n";
     cout << "*************Actions*************\n";
@@ -31,7 +31,7 @@ bool actions(const bool isAdmin, vector<Book> &books, vector<string> &users)
     }
     else if (!isAdmin)
     {
-        if (userActions(books))
+        if (userActions(books, users))
         {
             return true;
         }
@@ -40,7 +40,7 @@ bool actions(const bool isAdmin, vector<Book> &books, vector<string> &users)
     
     return false;
 }
-bool adminActions(vector<Book> &books, vector<string> &users)
+bool adminActions(vector<Book> &books, vector<User> &users)
 {
     int userInput = 0;
 
@@ -94,7 +94,7 @@ bool adminActions(vector<Book> &books, vector<string> &users)
     }
     return false;
 }
-bool userActions(vector<Book> &books)
+bool userActions(vector<Book> &books, vector<User> &users)
 {
     int userInput = 0;
 
@@ -109,13 +109,13 @@ bool userActions(vector<Book> &books)
     switch (userInput)
     {
     case 1:
-        borrowBook(books);
+        borrowBook(books, users);
         break;
     case 2:
         viewAllBooks(books);
         break;
     case 3:
-        returnBook(books);
+        returnBook(books, users);
         break;
     case 4:
         return true;
@@ -162,8 +162,8 @@ void addbook(vector<Book> &books)
         newBook.genres.push_back(genre);
         genreNum++;
     }
-    string his;
-    newBook.borrowHistory.push_back("None");
+    int prevBookId = books[books.size()-1].bookId;
+    newBook.bookId = prevBookId+1;
     books.push_back(newBook);
     cout << "Adding A Book";
 
@@ -306,65 +306,88 @@ void searchbooks(vector<Book> &books)
         
         cout << '\n';
         cout << "            Units Availabe: " << bookToSearch.units << ".\n";
-        cout << "            Borrowed By: ";
-        for (int i = 0; i < bookToSearch.borrowHistory.size(); i++)
-        {
-            cout << bookToSearch.borrowHistory[i];
-            if(i != bookToSearch.borrowHistory.size()-1) cout << ", ";
-        }
+        cout << "            BookId : " << bookToSearch.bookId << '\n';
         cout << '\n';
     }
 }
-void addUser(vector<string> &users)
+void addUser(vector<User> &users)
 {
     //Get New User
-    string newUser;
+    string newUserName;
     cout << "Enter Name Of New User: ";
-    cin >> newUser;
+    cin >> newUserName;
+
+    //check if user already exists
+    for (size_t i = 0; i < users.size(); i++)
+    {
+        if (users[i].studentName == newUserName)
+        {
+            cout << "ERROR : User Already Exists.";
+            return;
+        }
+        
+    }
+
+    User newUser;
+    newUser.studentId = (users[users.size()-1].studentId)+1;
+    newUser.studentName = newUserName;
+    newUser.book1Id = 0;
+    newUser.book2Id = 0;
+    newUser.book3Id = 0;
+    newUser.book4Id = 0;
+    newUser.book5Id = 0;
+    
     users.push_back(newUser);
 
     //Save Data
-    saveUsers(users, "data/users.txt");
+    writeUsers("data/users.csv", users);
 }
-void removeUser(vector<string> &users)
+void removeUser(vector<User> &users)
 {
-    //Get User To Remove
-    string userToRemove;
-    cout << "Enter Name Of User To Remove: ";
-    cin >> userToRemove;
-    users.erase(remove(users.begin(), users.end(), userToRemove), users.end());
+    int userIdToRemove;
+    User userToRemove;
+    bool wrongInput = false;
+    cout << "Enter User ID To Remove : ";
+    cin >> userIdToRemove;
+    
 
-    cout << "Removing A User";
-
+    for (size_t i = 0; i < users.size(); i++)
+    {
+        if (users[i].studentId == userIdToRemove)
+        {
+            users.erase(users.begin()+i);
+            cout << "User Removed Successfully";
+        }
+    }
+    
     //Save Data
-    saveUsers(users, "data/users.txt");
+    writeUsers("data/users.csv", users);
 }
-void viewAllUsers(vector<string> &users)
+void viewAllUsers(vector<User> &users)
 {
     //View Users
     cout << "USERS -->\n";
-    for(string user: users)
+    
+    for (size_t i = 0; i < users.size(); i++)
     {
-        cout << user << '\n';
+        cout << users[i].studentName << ", ID=" << users[i].studentId << '\n';
     }
-    cout << "Press Enter To Continue...";
-    string wait;
-    cin >> wait;
+    cout << "*************************";
 }
-void showOverdueUsers(vector<string> &users)
+void showOverdueUsers(vector<User> &users)
 {
     cout << "Showing Overdue Users";
 }
 
 //user functions
-void borrowBook(vector<Book> &books)
+void borrowBook(vector<Book> &books, vector<User> &users)
 {
     cout << "Borrowing A Book";
 
     //Save Data
     writeBooks("data/books.csv", books);
 }
-void returnBook(vector<Book> &books)
+void returnBook(vector<Book> &books, vector<User> &users)
 {
     cout << "Returning A Book";
 

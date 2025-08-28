@@ -11,15 +11,15 @@ using namespace std;
 //Global Variables
 bool isAdmin = false;
 
-bool UserLogin(vector<string> &users);
-vector<string> GetUsers(const string path);
+bool UserLogin(vector<User> &users);
 
 int main()
 {
-    vector<string> users;
-    users = GetUsers("data/users.txt");
+    //Load Data
+    vector<User> users = loadUsers("data/users.csv");
     bool isLogin = UserLogin(users);
     vector<Book> books = loadBooks("data/books.csv");
+    
 
 
     while (true)
@@ -38,21 +38,12 @@ int main()
 
     //Save Data
     writeBooks("data/books.csv", books);
-    saveUsers(users, "data/users.txt");
+    writeUsers("data/users.csv", users);
     cout << '\n';
     return 0;
 }
 
-vector<string> GetUsers(const string path)
-{
-    string text;
-    vector<string> users;
-    ifstream ReadFile(path);
-    getline(ReadFile, text);
-    return split(text, ',');
-}
-
-bool UserLogin(vector<string> &users)
+bool UserLogin(vector<User> &users)
 {
     bool isLogin = false;
     bool isValidUser = false;
@@ -65,10 +56,9 @@ bool UserLogin(vector<string> &users)
         cout << "username: ";
         cin >> username;
 
-        //checks if user is in the users[] global array
         for (int i = 0; i < users.size(); i++)
         {
-            if (users[i] == username)
+            if (users[i].studentName == username)
             {
                 isValidUser = true;
             }

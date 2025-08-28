@@ -48,7 +48,7 @@ vector<Book> loadBooks(const string &filename)
         }
 
         book.genres = split(tokens[4], ';');
-        book.borrowHistory = split(tokens[5], ';');
+        book.bookId = stoi(tokens[5]);
 
         books.push_back(book);
     }
@@ -65,11 +65,10 @@ void writeBooks(const string &filename, const vector<Book> &books)
         return;
     }
 
-    file << "Title,Author,Year,Units,Genres,BorrowHistory\n";
+    file << "Title,Author,Year,Units,Genres,BookId\n";
 
     for (const auto &book : books)
     {
-        string borrowHis;
         string gen;
 
         for (int i = 0; i < book.genres.size(); i++)
@@ -77,38 +76,13 @@ void writeBooks(const string &filename, const vector<Book> &books)
             gen+= book.genres[i];
             if(i != book.genres.size()-1) gen+=";";        
         }
-        for (int i = 0; i < book.borrowHistory.size(); i++)
-        {
-            borrowHis+= book.borrowHistory[i];
-            if(i != book.borrowHistory.size()-1) borrowHis+=";";        
-        }
 
         file << book.title << ","
             << book.author << ","
             << book.year << ","
             << book.units << ","
             << gen << ","
-            << borrowHis << '\n';
+            << book.bookId << '\n';
         }
     file.close();
-}
-
-void saveUsers(vector<string> &users, const string path)
-{
-    ofstream writeFile(path);
-    if(!writeFile)
-    {
-        cout << "Error Opening File For Writing";
-        return;
-    }
-
-    for (size_t i = 0; i < users.size(); i++)
-    {
-        writeFile << users[i];
-        if (i != users.size()-1)
-        {
-            writeFile << ",";
-        }
-    }
-    writeFile.close();
 }
