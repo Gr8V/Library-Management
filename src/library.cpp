@@ -454,14 +454,232 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
 }
 void returnBook(vector<Book> &books, vector<User> &users, const string &username)
 {
-    cout << "Returning A Book";
+    int indexOfUser;
+    int indexOfBook;
+    Book bookToReturn;
+    User currentUser;
+    int userInput;
+
+    for (size_t i = 0; i < users.size(); i++)
+    {
+        if (users[i].studentName == username)
+        {
+            currentUser = users[i];
+            indexOfUser = i;
+        }
+    }
+
+    if (currentUser.book1Id == 0 && currentUser.book2Id == 0 && currentUser.book3Id == 0 &&
+        currentUser.book4Id == 0 && currentUser.book5Id == 0)
+    {
+        cout << "You Haven't Borrowed Any Books Yet.\n";
+        return;
+    }
+    
+
+    cout << "Which Book Do You Want To Return -->\n";
+    //prints the name of all the books borrwoed
+    for (int i = 0; i < 5; i++)
+    {
+        cout << "[" << i+1 << "] ";
+        switch (i)
+        {
+            case 0:
+                if (currentUser.book1Id != 0)
+                {
+                    string bookname;
+                    for (size_t i = 0; i < books.size(); i++)
+                    {
+                        if (books[i].bookId == currentUser.book1Id)
+                        {
+                            bookname = books[i].title;
+                        }
+                    }
+                    cout << bookname;
+                }
+                else
+                {
+                    cout << "None";
+                }
+                cout << '\n';
+                break;
+            case 1:
+                if (currentUser.book2Id != 0)
+                {
+                    string bookname;
+                    for (size_t i = 0; i < books.size(); i++)
+                    {
+                        if (books[i].bookId == currentUser.book2Id)
+                        {
+                            bookname = books[i].title;
+                        }
+                    }
+                    cout << bookname;
+                }
+                else
+                {
+                    cout << "None";
+                }
+                cout << '\n';
+                break;
+            case 2:
+                if (currentUser.book3Id != 0)
+                {
+                    string bookname;
+                    for (size_t i = 0; i < books.size(); i++)
+                    {
+                        if (books[i].bookId == currentUser.book3Id)
+                        {
+                            bookname = books[i].title;
+                        }
+                    }
+                    cout << bookname;
+                }
+                else
+                {
+                    cout << "None";
+                }
+                cout << '\n';
+                break;
+            case 3:
+                if (currentUser.book4Id != 0)
+                {
+                    string bookname;
+                    for (size_t i = 0; i < books.size(); i++)
+                    {
+                        if (books[i].bookId == currentUser.book4Id)
+                        {
+                            bookname = books[i].title;
+                        }
+                    }
+                    cout << bookname;
+                }
+                else
+                {
+                    cout << "None";
+                }
+                cout << '\n';
+                break;
+            case 4:
+                if (currentUser.book5Id != 0)
+                {
+                    string bookname;
+                    for (size_t i = 0; i < books.size(); i++)
+                    {
+                        if (books[i].bookId == currentUser.book5Id)
+                        {
+                            bookname = books[i].title;
+                        }
+                    }
+                    cout << bookname;
+                }
+                else
+                {
+                    cout << "None";
+                }
+                cout << '\n';
+                break;
+            default:
+                break;
+        }
+        
+    }
+    cout << ">> ";
+    cin >> userInput;
+    //gets the book from books database
+    switch (userInput)
+    {
+    case 1:
+        for (size_t i = 0; i < books.size(); i++)
+        {
+            if (books[i].bookId == currentUser.book1Id)
+            {
+                bookToReturn = books[i];
+                indexOfBook = i;
+            }
+        }
+        currentUser.book1Id = 0;
+        bookToReturn.units++;
+        break;
+    case 2:
+        for (size_t i = 0; i < books.size(); i++)
+        {
+            if (books[i].bookId == currentUser.book2Id)
+            {
+                bookToReturn = books[i];
+                indexOfBook = i;
+            }
+        }
+        currentUser.book2Id = 0;
+        bookToReturn.units++;
+        break;
+    case 3:
+        for (size_t i = 0; i < books.size(); i++)
+        {
+            if (books[i].bookId == currentUser.book3Id)
+            {
+                bookToReturn = books[i];
+                indexOfBook = i;
+            }
+        }
+        currentUser.book3Id = 0;
+        bookToReturn.units++;
+        break;
+    case 4:
+        for (size_t i = 0; i < books.size(); i++)
+        {
+            if (books[i].bookId == currentUser.book4Id)
+            {
+                bookToReturn = books[i];
+                indexOfBook = i;
+            }
+        }
+        currentUser.book4Id = 0;
+        bookToReturn.units++;
+        break;
+    case 5:
+        for (size_t i = 0; i < books.size(); i++)
+        {
+            if (books[i].bookId == currentUser.book5Id)
+            {
+                bookToReturn = books[i];
+                indexOfBook = i;
+            }
+        }
+        currentUser.book5Id = 0;
+        bookToReturn.units++;
+        break;
+    default:
+        break;
+    }
+    
+
+
 
     //Save Data
+    users[indexOfUser] = currentUser;
+    books[indexOfBook] = bookToReturn;
+    writeUsers("data/users.csv", users);
     writeBooks("data/books.csv", books);
 }
 
 //common functions
 void viewAllBooks(vector<Book> &books)
 {
-    cout << "Viewing All Book";
+    for (size_t i = 0; i < books.size(); i++)
+    {
+        cout << "ID - " << books[i].bookId << '\n';
+        cout << "Title - " << books[i].title << '\n';
+        cout << "Author - " << books[i].author << '\n';
+        cout << "Genres - ";
+        for (auto genre:books[i].genres)
+        {
+            cout << genre << ';';
+        }
+        cout << '\n';
+        cout << "Units - " << books[i].units << '\n';
+        cout << "Published In - " << books[i].year << '\n';
+        cout << "******************************************\n";
+    }
+    
 }
