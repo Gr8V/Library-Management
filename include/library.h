@@ -14,7 +14,7 @@ bool userActions(vector<Book> &books, vector<User> &users, const string &usernam
 //admin functions
 void addbook(vector<Book> &books);
 void editbooks(vector<Book> &books);
-void searchbooks(vector<Book> &books);
+void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string &username);
 
 void addUser(vector<User> &users);
 void removeUser(vector<User> &users);

@@ -75,3 +75,9 @@ void writeUsers(const string &filename, const vector<User> &users)
         }
     file.close();
 }
+
+void addTransaction(const string &fileName, int userID, int bookID, string action){
+    //format
+    //userID, bookID, action, timestamp
+    //1,15, BORROW, 2025-09-06 14:32
+}

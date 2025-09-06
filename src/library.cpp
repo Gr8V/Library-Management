@@ -47,7 +47,7 @@ bool adminActions(vector<Book> &books, vector<User> &users)
     cout << "BOOKS -->\n";
     cout << "[1] Add Book\n";
     cout << "[2] Edit Book\n";
-    cout << "[3] Search Book\n";
+    cout << "[3] Search/Filter Books\n";
     cout << "[4] View All Books\n";
     cout << "USERS -->\n";
     cout << "[5] Add User\n";
@@ -68,7 +68,7 @@ bool adminActions(vector<Book> &books, vector<User> &users)
         editbooks(books);
         break;
     case 3:
-        searchbooks(books);
+        searchAndFilterbooks(books, users, "admin");
         break;
     case 4:
         viewAllBooks(books);
@@ -99,9 +99,10 @@ bool userActions(vector<Book> &books, vector<User> &users, const string &usernam
     int userInput = 0;
 
     cout << "[1] Borrow Book\n";
-    cout << "[2] View All Book\n";
-    cout << "[3] Return Book\n";
-    cout << "[4] Quit\n";
+    cout << "[2] Return Book\n";
+    cout << "[3] View All Book\n";
+    cout << "[4] Search/Filter Books\n";
+    cout << "[5] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
     cout << '\n';
@@ -112,12 +113,15 @@ bool userActions(vector<Book> &books, vector<User> &users, const string &usernam
         borrowBook(books, users, username);
         break;
     case 2:
-        viewAllBooks(books);
-        break;
-    case 3:
         returnBook(books, users, username);
         break;
+    case 3:
+        viewAllBooks(books);
+        break;
     case 4:
+        searchAndFilterbooks(books, users, username);
+        break;
+    case 5:
         return true;
         break;
     default:
@@ -274,39 +278,167 @@ void editbooks(vector<Book> &books)
     //Save Data
     writeBooks("data/books.csv", books);
 }
-void searchbooks(vector<Book> &books)
+void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string &username)
 {
-    Book bookToSearch;
-    string bookTitle;
+    vector<Book> booksSearched;
+    int howToSearch;
+    
+    cout << "How Do You Want To Search/Filter --> \n";
+    cout << "[1] by Title\n";
+    cout << "[2] by Author\n";
+    cout << "[3] by BookID\n";
+    cout << "[4] by Genre\n";
+    cout << "[5] by Year\n";
+    cout << "[6] show Avaiable\n";
+    cout << "[7] show Borrowed(By User)\n";
+    cout << ">>";
+    cin >> howToSearch;
+    cout << "\n\n";
 
-    cout << "Enter Title Of Book To Search : ";
-    getline(cin >> ws, bookTitle);
-    titleCase(bookTitle);
-    for (int i = 0; i < books.size(); i++)
+    switch (howToSearch)
     {
-        if (books[i].title == bookTitle)
+    case 1:{
+        string bookTitle;
+        cout << "Enter Title: ";
+        getline(cin >> ws, bookTitle);
+        titleCase(bookTitle);
+        for (int i = 0; i < books.size(); i++)
         {
-            bookToSearch = books[i];
+            if (books[i].title == bookTitle)
+            {
+                booksSearched.push_back(books[i]);
+            }
         }
+        break;
     }
-    if (bookToSearch.title == "" && bookToSearch.author == "")
-    {
-        cout << "Book Not Found!!!\n";
-    }
-    else
-    {
-        cout << "Book Found: " << bookToSearch.title << " by " << bookToSearch.author << ".\n";
-        cout << "            Published in the year " << bookToSearch.year << ".\n";
-        cout << "            Genres: ";
-        for (int i = 0; i < bookToSearch.genres.size(); i++)
+    case 2:{
+        string bookAuthor;
+        cout << "Enter Author: ";
+        getline(cin >> ws, bookAuthor);
+        titleCase(bookAuthor);
+        for (int i = 0; i < books.size(); i++)
         {
-            cout << bookToSearch.genres[i];
-            if(i != bookToSearch.genres.size()-1) cout << ", ";
+            if (books[i].author == bookAuthor)
+            {
+                booksSearched.push_back(books[i]);
+            }
+        }
+        break;
+    }
+    case 3:{
+        int bookID;
+        cout << "Enter BookID: ";
+        cin >> bookID;
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].bookId == bookID)
+            {
+                booksSearched.push_back(books[i]);
+            }
+        }
+        break;
+    }
+    case 4:{
+        string bookGenre;
+        cout << "Enter Genre: ";
+        getline(cin >> ws, bookGenre);
+        titleCase(bookGenre);
+        for (int i = 0; i < books.size(); i++)
+        {
+            for(auto genre: books[i].genres)
+            {
+                if (genre == bookGenre)
+                {
+                    booksSearched.push_back(books[i]);
+                }
+                
+            }
+        }
+        break;
+    }
+    case 5:{
+        int bookYear;
+        cout << "Enter Year: ";
+        cin >> bookYear;
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].year == bookYear)
+            {
+                booksSearched.push_back(books[i]);
+            }
+        }
+        break;
+    }
+    case 6:{
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].units != 0)
+            {
+                booksSearched.push_back(books[i]);
+            }
+        }
+        break;
+    }
+    case 7:{
+        int borrowedBookIDs[5];
+        for (size_t i = 0; i < users.size(); i++)
+        {
+            if (users[i].studentName == username)
+            {
+                borrowedBookIDs[0] = users[i].book1Id;
+                borrowedBookIDs[1] = users[i].book2Id;
+                borrowedBookIDs[2] = users[i].book3Id;
+                borrowedBookIDs[3] = users[i].book4Id;
+                borrowedBookIDs[4] = users[i].book5Id;
+            }
+        }
+        
+
+        for (int i = 0; i < books.size(); i++)
+        {
+            if (books[i].bookId == borrowedBookIDs[0])
+            {
+                booksSearched.push_back(books[i]);
+            }
+            else if (books[i].bookId == borrowedBookIDs[1])
+            {
+                booksSearched.push_back(books[i]);
+            }
+            else if (books[i].bookId == borrowedBookIDs[2])
+            {
+                booksSearched.push_back(books[i]);
+            }
+            else if (books[i].bookId == borrowedBookIDs[3])
+            {
+                booksSearched.push_back(books[i]);
+            }
+            else if (books[i].bookId == borrowedBookIDs[4])
+            {
+                booksSearched.push_back(books[i]);
+            }
+            
+        }
+        break;
+    }
+    default:
+        break;
+    }
+
+    for(auto book : booksSearched)
+    {
+        cout << "\n";
+        cout << book.title << " by " << book.author << ".\n";
+        cout << "Published in the year " << book.year << ".\n";
+        cout << "Genres: ";
+        for (int i = 0; i < book.genres.size(); i++)
+        {
+            cout << book.genres[i];
+            if(i != book.genres.size()-1) cout << ", ";
         }
         
         cout << '\n';
-        cout << "            Units Availabe: " << bookToSearch.units << ".\n";
-        cout << "            BookId : " << bookToSearch.bookId << '\n';
+        cout << "Units Availabe: " << book.units << ".\n";
+        cout << "BookId : " << book.bookId << '\n';
         cout << '\n';
     }
 }
