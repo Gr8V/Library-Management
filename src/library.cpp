@@ -583,6 +583,8 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
     books[indexToBorrow] = bookToBorrow;
     writeUsers("data/users.csv", users);
     writeBooks("data/books.csv", books);
+
+    addTransaction("data/transactions.csv", currentUser.studentId, bookToBorrow.bookId, "BORROW");
 }
 void returnBook(vector<Book> &books, vector<User> &users, const string &username)
 {
@@ -793,6 +795,8 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     books[indexOfBook] = bookToReturn;
     writeUsers("data/users.csv", users);
     writeBooks("data/books.csv", books);
+
+    addTransaction("data/transactions.csv", currentUser.studentId, bookToReturn.bookId, "RETURN");
 }
 
 //common functions

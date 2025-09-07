@@ -1,6 +1,7 @@
 #include "../include/users.h"
 #include "../include/book.h"
 #include <sstream>
+#include <ctime>
 #include <fstream>
 
 
@@ -77,7 +78,22 @@ void writeUsers(const string &filename, const vector<User> &users)
 }
 
 void addTransaction(const string &fileName, int userID, int bookID, string action){
-    //format
-    //userID, bookID, action, timestamp
-    //1,15, BORROW, 2025-09-06 14:32
+
+    string currentTime;
+    time_t now = time(nullptr);
+    char buffer[20];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localtime(&now));
+    currentTime = string(buffer);
+
+    ofstream file;
+    file.open(fileName, ios::app);
+    if (file.is_open())
+    {
+        file << "\n" << userID << ", " << bookID << ", " << action << ", " << currentTime;
+        file.close();
+    }
+    else
+    {
+        cout << "ERROR : Unable to log transaction. file not open.";
+    }
 }
