@@ -4,6 +4,8 @@
 #include <string>
 #include <algorithm>
 #include <ctime>
+#include <sstream>
+#include <iomanip>
 
 using namespace std;
 
@@ -15,6 +17,39 @@ void titleCase(string &title)
         if (isspace(c)) cap = true;
         else if (cap) { c = toupper(c); cap = false; }
     }
+}
+int fineCalculator(const string &dueDate)
+{
+    const int FINE_PER_DAY = 10;
+
+    //calculates current date
+    string currentDate;
+    time_t now = time(nullptr);
+    char buffer[11];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&now));
+    currentDate = string(buffer);
+    
+    //if before due date
+    if (currentDate <= dueDate)
+    {
+        return 0;
+    }
+    
+    //if after due date
+    tm tmCurrent = {}, tmDue = {};
+
+    istringstream(currentDate) >> get_time(&tmCurrent, "%Y-%m-%d");
+    tmCurrent.tm_hour = 0; tmCurrent.tm_min = 0; tmCurrent.tm_sec = 0;
+
+    istringstream(dueDate) >> get_time(&tmDue, "%Y-%m-%d");
+    tmDue.tm_hour = 0; tmDue.tm_min = 0; tmDue.tm_sec = 0;
+    
+    time_t timeCurrent = mktime(&tmCurrent);
+    time_t timeDue = mktime(&tmDue);
+
+    int daysBetween = abs(difftime(timeCurrent, timeDue)) / (60*60*24);
+
+    return daysBetween*FINE_PER_DAY;
 }
 
 bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users, const string &username)
@@ -497,13 +532,36 @@ void viewAllUsers(vector<User> &users)
 }
 void showOverdueUsers(vector<User> &users)
 {
-    cout << "Showing Overdue Users";
+    //gets current date
+    string currentDate;
+    time_t now = time(nullptr);
+    char buffer[11];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&now));
+    currentDate = string(buffer);
+
+    //displays overdue users
+    for (size_t i = 0; i < users.size(); i++)
+    {
+        for (size_t j = 0; j < users[i].BorrowedBooks.size(); j++)
+        {
+            if (users[i].BorrowedBooks[j].dueDate < currentDate)
+            {
+                cout << "UserName : " << users[i].studentName << '\n';
+                cout << "OverDue Book ID : " << users[i].BorrowedBooks[j].bookId
+                    << "\n\n";
+            }
+            
+        }
+        
+        
+    }
+    
 }
 
 //user functions
 void borrowBook(vector<Book> &books, vector<User> &users, const string &username)
 {
-    int daysCanBorrowFor = 15;
+    const int DAYS_CAN_BORROW_FOR = 15;
 
     int borrowBookId;
     int indexToBorrow;
@@ -557,7 +615,7 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
     currentDate = string(buffer);
     
     string dueDate;
-    now += daysCanBorrowFor * 24 * 60 * 60;
+    now += DAYS_CAN_BORROW_FOR * 24 * 60 * 60;
     strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&now));
     dueDate = string(buffer);
 
@@ -624,6 +682,17 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     cout << ">> ";
     cin >> indexOfBorrowed;
     indexOfBorrowed--;
+
+    //calulates fine(if any)
+    int fine = fineCalculator(currentUser.BorrowedBooks[indexOfBorrowed].dueDate);
+    if (fine != 0)
+    {
+        cout << "You are over the due date!!!!\n";
+        cout << "Submit the fine amout of Rs." << fine << '\n';
+    }
+    
+    
+
     //gets the book from books database
     for (size_t i = 0; i < books.size(); i++)
     {

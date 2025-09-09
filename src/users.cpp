@@ -68,7 +68,7 @@ void writeUsers(const string &filename, const vector<User> &users)
         return;
     }
 
-    file << "studentId,studentName,book1Id,book2Id,book3Id,book4Id,book5Id\n";
+    file << "studentId,studentName,book1,book2,book3Id,book4,book5\n";
 
     for (const auto &user : users)
     {
