@@ -3,6 +3,7 @@
 #include <fstream>
 #include <string>
 #include <algorithm>
+#include <ctime>
 
 using namespace std;
 
@@ -380,41 +381,34 @@ void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string
         break;
     }
     case 7:{
-        int borrowedBookIDs[5];
+        vector<int> borrowedBookIDs;
         for (size_t i = 0; i < users.size(); i++)
         {
             if (users[i].studentName == username)
             {
-                borrowedBookIDs[0] = users[i].book1Id;
-                borrowedBookIDs[1] = users[i].book2Id;
-                borrowedBookIDs[2] = users[i].book3Id;
-                borrowedBookIDs[3] = users[i].book4Id;
-                borrowedBookIDs[4] = users[i].book5Id;
+                for (int j = 0; j < 5; j++)
+                {
+                    if (j < users[i].BorrowedBooks.size() && users[i].BorrowedBooks[j].bookId != 0)
+                    {
+                        borrowedBookIDs.push_back(users[i].BorrowedBooks[j].bookId);
+                    }
+                    
+                }
+                
             }
         }
         
 
         for (int i = 0; i < books.size(); i++)
         {
-            if (books[i].bookId == borrowedBookIDs[0])
+            for (int id : borrowedBookIDs)
             {
-                booksSearched.push_back(books[i]);
-            }
-            else if (books[i].bookId == borrowedBookIDs[1])
-            {
-                booksSearched.push_back(books[i]);
-            }
-            else if (books[i].bookId == borrowedBookIDs[2])
-            {
-                booksSearched.push_back(books[i]);
-            }
-            else if (books[i].bookId == borrowedBookIDs[3])
-            {
-                booksSearched.push_back(books[i]);
-            }
-            else if (books[i].bookId == borrowedBookIDs[4])
-            {
-                booksSearched.push_back(books[i]);
+                if (books[i].bookId == id)
+                {
+                    booksSearched.push_back(books[i]);
+                    break;
+                }
+                
             }
             
         }
@@ -463,11 +457,6 @@ void addUser(vector<User> &users)
     User newUser;
     newUser.studentId = (users[users.size()-1].studentId)+1;
     newUser.studentName = newUserName;
-    newUser.book1Id = 0;
-    newUser.book2Id = 0;
-    newUser.book3Id = 0;
-    newUser.book4Id = 0;
-    newUser.book5Id = 0;
     
     users.push_back(newUser);
 
@@ -514,11 +503,14 @@ void showOverdueUsers(vector<User> &users)
 //user functions
 void borrowBook(vector<Book> &books, vector<User> &users, const string &username)
 {
+    int daysCanBorrowFor = 15;
+
     int borrowBookId;
     int indexToBorrow;
     int indexOfUser;
     Book bookToBorrow;
     User currentUser;
+    //get user
     for (size_t i = 0; i < users.size(); i++)
     {
         if (users[i].studentName == username)
@@ -527,6 +519,17 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
             indexOfUser = i;
         }
     }
+
+    //check if user can borrow(hasn't already borrowed 5 books)
+    if (currentUser.BorrowedBooks.size() >= 5)
+    {
+        cout << "You have already borrowed " << currentUser.BorrowedBooks.size()
+            << " Books. You Cannot Borrow More.";
+        return;
+    }
+    
+
+    //user input for bookId
     cout << "Enter The Id Of Book You Want To Borrow : ";
     cin >> borrowBookId;
 
@@ -539,44 +542,33 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
             indexToBorrow = i;
         }
     }
-
+    //checks if book is out of stock
     if (bookToBorrow.units == 0)
     {
         cout << "The Book Is Out Of Stock\n\n";
         return;
     }
-    
 
-    if (currentUser.book1Id == 0)
-    {
-        currentUser.book1Id = bookToBorrow.bookId;
-        bookToBorrow.units--;
-    }
-    else if (currentUser.book2Id == 0)
-    {
-        currentUser.book2Id = bookToBorrow.bookId;
-        bookToBorrow.units--;
-    }
-    else if (currentUser.book3Id == 0)
-    {
-        currentUser.book3Id = bookToBorrow.bookId;
-        bookToBorrow.units--;
-    }
-    else if (currentUser.book4Id == 0)
-    {
-        currentUser.book4Id = bookToBorrow.bookId;
-        bookToBorrow.units--;
-    }
-    else if (currentUser.book5Id == 0)
-    {
-        currentUser.book5Id = bookToBorrow.bookId;
-        bookToBorrow.units--;
-    }
-    else
-    {
-        cout << "You Already Borrowed 5 Books\n";
-        cout << "You Can't Borrow Any More Books Till You Return Any Other Books";
-    }
+    //Gets current date and due date
+    string currentDate;
+    time_t now = time(nullptr);
+    char buffer[11];
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&now));
+    currentDate = string(buffer);
+    
+    string dueDate;
+    now += daysCanBorrowFor * 24 * 60 * 60;
+    strftime(buffer, sizeof(buffer), "%Y-%m-%d", localtime(&now));
+    dueDate = string(buffer);
+
+    //borrow book
+    BorrwedBookData currentBorrowingBookData;
+    currentBorrowingBookData.bookId = borrowBookId;
+    currentBorrowingBookData.borrowDate = currentDate;
+    currentBorrowingBookData.dueDate = dueDate;
+    currentUser.BorrowedBooks.push_back(currentBorrowingBookData);
+
+    bookToBorrow.units--;
     
     //Save Data
     users[indexOfUser] = currentUser;
@@ -592,8 +584,9 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     int indexOfBook;
     Book bookToReturn;
     User currentUser;
-    int userInput;
+    int indexOfBorrowed;
 
+    //gets user
     for (size_t i = 0; i < users.size(); i++)
     {
         if (users[i].studentName == username)
@@ -603,8 +596,8 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
         }
     }
 
-    if (currentUser.book1Id == 0 && currentUser.book2Id == 0 && currentUser.book3Id == 0 &&
-        currentUser.book4Id == 0 && currentUser.book5Id == 0)
+    //checks if user hasn't borrowed any books yet
+    if (currentUser.BorrowedBooks.size() == 0)
     {
         cout << "You Haven't Borrowed Any Books Yet.\n";
         return;
@@ -612,180 +605,37 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     
 
     cout << "Which Book Do You Want To Return -->\n";
-    //prints the name of all the books borrwoed
-    for (int i = 0; i < 5; i++)
+    //prints the name of all the books borrowed
+    for (size_t i = 0; i < currentUser.BorrowedBooks.size(); i++)
     {
         cout << "[" << i+1 << "] ";
-        switch (i)
+        string bookname;
+        for (size_t j = 0; j < books.size(); j++)
         {
-            case 0:
-                if (currentUser.book1Id != 0)
-                {
-                    string bookname;
-                    for (size_t i = 0; i < books.size(); i++)
-                    {
-                        if (books[i].bookId == currentUser.book1Id)
-                        {
-                            bookname = books[i].title;
-                        }
-                    }
-                    cout << bookname;
-                }
-                else
-                {
-                    cout << "None";
-                }
-                cout << '\n';
-                break;
-            case 1:
-                if (currentUser.book2Id != 0)
-                {
-                    string bookname;
-                    for (size_t i = 0; i < books.size(); i++)
-                    {
-                        if (books[i].bookId == currentUser.book2Id)
-                        {
-                            bookname = books[i].title;
-                        }
-                    }
-                    cout << bookname;
-                }
-                else
-                {
-                    cout << "None";
-                }
-                cout << '\n';
-                break;
-            case 2:
-                if (currentUser.book3Id != 0)
-                {
-                    string bookname;
-                    for (size_t i = 0; i < books.size(); i++)
-                    {
-                        if (books[i].bookId == currentUser.book3Id)
-                        {
-                            bookname = books[i].title;
-                        }
-                    }
-                    cout << bookname;
-                }
-                else
-                {
-                    cout << "None";
-                }
-                cout << '\n';
-                break;
-            case 3:
-                if (currentUser.book4Id != 0)
-                {
-                    string bookname;
-                    for (size_t i = 0; i < books.size(); i++)
-                    {
-                        if (books[i].bookId == currentUser.book4Id)
-                        {
-                            bookname = books[i].title;
-                        }
-                    }
-                    cout << bookname;
-                }
-                else
-                {
-                    cout << "None";
-                }
-                cout << '\n';
-                break;
-            case 4:
-                if (currentUser.book5Id != 0)
-                {
-                    string bookname;
-                    for (size_t i = 0; i < books.size(); i++)
-                    {
-                        if (books[i].bookId == currentUser.book5Id)
-                        {
-                            bookname = books[i].title;
-                        }
-                    }
-                    cout << bookname;
-                }
-                else
-                {
-                    cout << "None";
-                }
-                cout << '\n';
-                break;
-            default:
-                break;
+            if (books[j].bookId == currentUser.BorrowedBooks[i].bookId)
+            {
+                bookname = books[j].title;
+            }
+        }
+        cout << bookname << '\n';
+    }
+    
+    //gets user input
+    cout << ">> ";
+    cin >> indexOfBorrowed;
+    indexOfBorrowed--;
+    //gets the book from books database
+    for (size_t i = 0; i < books.size(); i++)
+    {
+        if (books[i].bookId == currentUser.BorrowedBooks[indexOfBorrowed].bookId)
+        {
+            bookToReturn = books[i];
+            indexOfBook = i;
         }
         
     }
-    cout << ">> ";
-    cin >> userInput;
-    //gets the book from books database
-    switch (userInput)
-    {
-    case 1:
-        for (size_t i = 0; i < books.size(); i++)
-        {
-            if (books[i].bookId == currentUser.book1Id)
-            {
-                bookToReturn = books[i];
-                indexOfBook = i;
-            }
-        }
-        currentUser.book1Id = 0;
-        bookToReturn.units++;
-        break;
-    case 2:
-        for (size_t i = 0; i < books.size(); i++)
-        {
-            if (books[i].bookId == currentUser.book2Id)
-            {
-                bookToReturn = books[i];
-                indexOfBook = i;
-            }
-        }
-        currentUser.book2Id = 0;
-        bookToReturn.units++;
-        break;
-    case 3:
-        for (size_t i = 0; i < books.size(); i++)
-        {
-            if (books[i].bookId == currentUser.book3Id)
-            {
-                bookToReturn = books[i];
-                indexOfBook = i;
-            }
-        }
-        currentUser.book3Id = 0;
-        bookToReturn.units++;
-        break;
-    case 4:
-        for (size_t i = 0; i < books.size(); i++)
-        {
-            if (books[i].bookId == currentUser.book4Id)
-            {
-                bookToReturn = books[i];
-                indexOfBook = i;
-            }
-        }
-        currentUser.book4Id = 0;
-        bookToReturn.units++;
-        break;
-    case 5:
-        for (size_t i = 0; i < books.size(); i++)
-        {
-            if (books[i].bookId == currentUser.book5Id)
-            {
-                bookToReturn = books[i];
-                indexOfBook = i;
-            }
-        }
-        currentUser.book5Id = 0;
-        bookToReturn.units++;
-        break;
-    default:
-        break;
-    }
+    currentUser.BorrowedBooks.erase(currentUser.BorrowedBooks.begin()+indexOfBorrowed);
+    bookToReturn.units++;
     
 
 

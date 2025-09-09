@@ -40,12 +40,19 @@ vector<User> loadUsers(const string &filename)
         user.studentId = safeStoi(tokens[0]);
         user.studentName = tokens[1];
         
-        user.book1Id = safeStoi(tokens[2]);
-        user.book2Id = safeStoi(tokens[3]);
-        user.book3Id = safeStoi(tokens[4]);
-        user.book4Id = safeStoi(tokens[5]);
-        user.book5Id = safeStoi(tokens[6]);
-        
+        for (int i = 1; i <= 5; i++)
+        {
+            vector<string> temp = split(tokens[i+1], ';');
+            BorrwedBookData borrowedBook;
+            borrowedBook.bookId = safeStoi(temp.at(0));
+            borrowedBook.borrowDate = temp.at(1);
+            borrowedBook.dueDate = temp.at(2);
+            if (borrowedBook.bookId != 0)
+            {
+                user.BorrowedBooks.push_back(borrowedBook);
+            }
+            
+        }
         users.push_back(user);
     }
 
@@ -65,15 +72,24 @@ void writeUsers(const string &filename, const vector<User> &users)
 
     for (const auto &user : users)
     {
-
-        file << user.studentId << ","
-            << user.studentName << ","
-            << user.book1Id << ","
-            << user.book2Id << ","
-            << user.book3Id << ","
-            << user.book4Id << ","
-            << user.book5Id << '\n';
+        file << user.studentId << "," << user.studentName;
+        for (int i = 0; i < 5; i++)
+        {
+            file << ",";
+            if (i < user.BorrowedBooks.size())
+            {
+                const auto &b = user.BorrowedBooks[i];
+                file << b.bookId << ";" << b.borrowDate << ";" << b.dueDate;
+            }
+            else
+            {
+                file << "0;0;0";
+            }
+            
+            
         }
+        file << "\n";
+    }
     file.close();
 }
 

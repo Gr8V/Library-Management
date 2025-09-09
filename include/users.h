@@ -5,14 +5,16 @@
 #include <vector>
 using namespace std;
 
+struct BorrwedBookData {
+    int bookId;
+    string borrowDate;
+    string dueDate;
+};
+
 struct User {
     int studentId;
     string studentName;
-    int book1Id;
-    int book2Id;
-    int book3Id;
-    int book4Id;
-    int book5Id;
+    vector<BorrwedBookData> BorrowedBooks;
 };
 
 int safeStoi(const string &s, int defaultVal = 0);
