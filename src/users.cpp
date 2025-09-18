@@ -1,19 +1,7 @@
 #include "../include/users.h"
-#include "../include/book.h"
 #include <sstream>
 #include <ctime>
 #include <fstream>
-
-
-int safeStoi(const string &s, int defaultVal)
-{
-    if (s.empty()) return defaultVal;
-    try {
-        return stoi(s);
-    } catch (...) {
-        return defaultVal; // fallback if s is not a number
-    }
-}
 
 
 vector<User> loadUsers(const string &filename)
@@ -91,25 +79,4 @@ void writeUsers(const string &filename, const vector<User> &users)
         file << "\n";
     }
     file.close();
-}
-
-void addTransaction(const string &fileName, int userID, int bookID, string action){
-
-    string currentTime;
-    time_t now = time(nullptr);
-    char buffer[20];
-    strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", localtime(&now));
-    currentTime = string(buffer);
-
-    ofstream file;
-    file.open(fileName, ios::app);
-    if (file.is_open())
-    {
-        file << "\n" << userID << ", " << bookID << ", " << action << ", " << currentTime;
-        file.close();
-    }
-    else
-    {
-        cout << "ERROR : Unable to log transaction. file not open.";
-    }
 }

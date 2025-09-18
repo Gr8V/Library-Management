@@ -1,6 +1,7 @@
 #ifndef BOOK_H
 #define BOOK_H
 
+#include "utils.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -14,7 +15,6 @@ struct Book {
     int bookId;
 };
 
-vector<string> split(const string &s, char delimiter);
 vector<Book> loadBooks(const string &filename);
 void writeBooks(const string &filename, const vector<Book> &books);
 

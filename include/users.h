@@ -1,6 +1,7 @@
 #ifndef USERS_H
 #define USERS_H
 
+#include "utils.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -17,10 +18,7 @@ struct User {
     vector<BorrwedBookData> BorrowedBooks;
 };
 
-int safeStoi(const string &s, int defaultVal = 0);
 vector<User> loadUsers(const string &filename);
 void writeUsers(const string &filename, const vector<User> &users);
-
-void addTransaction(const string &fileName, int userID, int bookID, string action);
 
 #endif

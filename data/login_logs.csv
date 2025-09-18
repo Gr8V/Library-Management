@@ -1,0 +1,13 @@
+action, userID, username, timestamp, status, message
+LOGIN, 11, Vansh, 2025-09-19 00:18:50, 1, Successful User Login
+LOGOUT, 11, Vansh, 2025-09-19 00:19:04, 1, Successful Logout
+
+LOGIN, 0, admin, 2025-09-19 00:19:33, 0, Wrong Admin Password
+LOGIN, 0, admin, 2025-09-19 00:19:44, 1, Successful Admin Login
+LOGOUT, 50, admin, 2025-09-19 00:19:54, 1, Successful Logout
+
+LOGIN, 0, admin, 2025-09-19 00:20:37, 1, Successful Admin Login
+LOGOUT, 132, admin, 2025-09-19 00:20:39, 1, Successful Logout
+
+LOGIN, 0, admin, 2025-09-19 00:21:33, 1, Successful Admin Login
+LOGOUT, 0, admin, 2025-09-19 00:21:34, 1, Successful Logout
