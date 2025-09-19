@@ -22,6 +22,7 @@ void addUser(vector<User> &users);
 void removeUser(vector<User> &users);
 void viewAllUsers(vector<User> &users);
 void showOverdueUsers(vector<User> &users);
+void showLogs();
 
 //user functions
 void borrowBook(vector<Book> &books, vector<User> &users, const string &username);

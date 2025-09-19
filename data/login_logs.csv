@@ -11,3 +11,15 @@ LOGOUT, 132, admin, 2025-09-19 00:20:39, 1, Successful Logout
 
 LOGIN, 0, admin, 2025-09-19 00:21:33, 1, Successful Admin Login
 LOGOUT, 0, admin, 2025-09-19 00:21:34, 1, Successful Logout
+
+LOGIN, 0, Student1, 2025-09-19 22:47:23, 0, Not Valid User
+LOGIN, 0, Student01, 2025-09-19 22:47:30, 0, Not Valid User
+LOGIN, 1, student1, 2025-09-19 22:47:43, 1, Successful User Login
+LOGOUT, 1, student1, 2025-09-19 22:47:49, 1, Successful Logout
+
+LOGIN, 0, admin, 2025-09-19 22:59:23, 1, Successful Admin Login
+LOGIN, 0, admin, 2025-09-19 23:00:10, 1, Successful Admin Login
+LOGIN, 0, admin, 2025-09-19 23:02:20, 0, Wrong Admin Password
+LOGIN, 0, qwerty, 2025-09-19 23:02:23, 0, Not Valid User
+LOGIN, 0, admin, 2025-09-19 23:02:28, 1, Successful Admin Login
+LOGOUT, 0, admin, 2025-09-19 23:02:42, 1, Successful Logout

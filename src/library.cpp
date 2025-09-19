@@ -48,7 +48,8 @@ bool adminActions(vector<Book> &books, vector<User> &users)
     cout << "[6] Remove User\n";
     cout << "[7] View All Users\n";
     cout << "[8] Show Overdue Users\n";
-    cout << "[9] Quit\n";
+    cout << "[9] Show Logs\n";
+    cout << "[10] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
     cout << '\n';
@@ -80,6 +81,9 @@ bool adminActions(vector<Book> &books, vector<User> &users)
         showOverdueUsers(users);
         break;
     case 9:
+        showLogs();
+        break;
+    case 10:
         return true;
         break;
     default:
@@ -514,6 +518,49 @@ void showOverdueUsers(vector<User> &users)
         
     }
     
+}
+void showLogs()
+{
+    int whatToDo;
+    cout << "\nWhich Logs Do You Want To see --> \n";
+    cout << "[1] Transactions Logs\n";
+    cout << "[2] Loging Logs\n";
+    cin >> whatToDo;
+    if (whatToDo == 1)
+    {
+        ifstream file("data/transactions.csv");
+        if(!file.is_open())
+        {
+            cout << "FATAL ERROR : Could Not Open transactions.csv";
+            return;
+        }
+        string line;
+        while (getline(file, line))
+        {
+            if(line.empty()) continue;
+            cout << line << '\n';
+        }
+        
+    }
+    else if(whatToDo == 2)
+    {
+        ifstream file("data/login_logs.csv");
+        if(!file.is_open())
+        {
+            cout << "FATAL ERROR : Could Not Open login_logs.csv";
+            return;
+        }
+        string line;
+        while (getline(file, line))
+        {
+            if(line.empty()) continue;
+            cout << line << '\n';
+        }
+    }
+    else
+    {
+        cout << "Input Out Of Range";
+    }
 }
 
 //user functions
