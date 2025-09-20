@@ -16,14 +16,17 @@ int main()
 
     //Load Data
     vector<User> users = loadUsers("data/users.csv");
-    bool isLogin = UserLogin(users, isAdmin, username);
+    bool isLogin = UserLogin(users, isAdmin, username, userId);
     vector<Book> books = loadBooks("data/books.csv");
-
-
+    
+    //infinite loop to run program infinitely unless exited
     while (true)
     {
+        //checks if logged in
         if (isLogin)
         {
+            //if actions() returns true that means the user pressed "quit"
+            //if actions() returns false then the loop continues
             if (actions(isAdmin, books, users, username))
             {
                 cout << "Exiting Program";
@@ -38,14 +41,8 @@ int main()
     writeBooks("data/books.csv", books);
     writeUsers("data/users.csv", users);
     // login log (successful logout)
-    for (int i = 0; i < users.size(); i++)
-        {
-            if (users[i].studentName == username)
-            {
-                userId = users[i].studentId;
-            }
-        }
     loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful Logout");
+    
     cout << '\n';
     return 0;
 }

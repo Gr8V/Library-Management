@@ -13,9 +13,11 @@ struct BorrwedBookData {
 };
 
 struct User {
-    int studentId;
-    string studentName;
+    int userId;
+    string userName;
     vector<BorrwedBookData> BorrowedBooks;
+    string role;
+    string hashedPasswd;
 };
 
 vector<User> loadUsers(const string &filename);

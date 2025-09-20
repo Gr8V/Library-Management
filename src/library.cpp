@@ -381,7 +381,7 @@ void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string
         vector<int> borrowedBookIDs;
         for (size_t i = 0; i < users.size(); i++)
         {
-            if (users[i].studentName == username)
+            if (users[i].userName == username)
             {
                 for (int j = 0; j < 5; j++)
                 {
@@ -435,6 +435,7 @@ void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string
 }
 void addUser(vector<User> &users)
 {
+    string tempUserPasswd = sha256("Library@123");
     //Get New User
     string newUserName;
     cout << "Enter Name Of New User: ";
@@ -443,7 +444,7 @@ void addUser(vector<User> &users)
     //check if user already exists
     for (size_t i = 0; i < users.size(); i++)
     {
-        if (users[i].studentName == newUserName)
+        if (users[i].userName == newUserName)
         {
             cout << "ERROR : User Already Exists.";
             return;
@@ -452,9 +453,9 @@ void addUser(vector<User> &users)
     }
 
     User newUser;
-    newUser.studentId = (users[users.size()-1].studentId)+1;
-    newUser.studentName = newUserName;
-    
+    newUser.userId = (users[users.size()-1].userId)+1;
+    newUser.userName = newUserName;
+    newUser.hashedPasswd = tempUserPasswd;
     users.push_back(newUser);
 
     //Save Data
@@ -471,7 +472,7 @@ void removeUser(vector<User> &users)
 
     for (size_t i = 0; i < users.size(); i++)
     {
-        if (users[i].studentId == userIdToRemove)
+        if (users[i].userId == userIdToRemove)
         {
             users.erase(users.begin()+i);
             cout << "User Removed Successfully";
@@ -488,7 +489,7 @@ void viewAllUsers(vector<User> &users)
     
     for (size_t i = 0; i < users.size(); i++)
     {
-        cout << users[i].studentName << ", ID=" << users[i].studentId << '\n';
+        cout << users[i].userName<< ", ID=" << users[i].userId << '\n';
     }
     cout << "*************************";
 }
@@ -508,7 +509,7 @@ void showOverdueUsers(vector<User> &users)
         {
             if (users[i].BorrowedBooks[j].dueDate < currentDate)
             {
-                cout << "UserName : " << users[i].studentName << '\n';
+                cout << "UserName : " << users[i].userName << '\n';
                 cout << "OverDue Book ID : " << users[i].BorrowedBooks[j].bookId
                     << "\n\n";
             }
@@ -576,7 +577,7 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
     //get user
     for (size_t i = 0; i < users.size(); i++)
     {
-        if (users[i].studentName == username)
+        if (users[i].userName == username)
         {
             currentUser = users[i];
             indexOfUser = i;
@@ -639,7 +640,7 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
     writeUsers("data/users.csv", users);
     writeBooks("data/books.csv", books);
 
-    addTransaction("data/transactions.csv", currentUser.studentId, bookToBorrow.bookId, "BORROW");
+    addTransaction("data/transactions.csv", currentUser.userId, bookToBorrow.bookId, "BORROW");
 }
 void returnBook(vector<Book> &books, vector<User> &users, const string &username)
 {
@@ -652,7 +653,7 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     //gets user
     for (size_t i = 0; i < users.size(); i++)
     {
-        if (users[i].studentName == username)
+        if (users[i].userName == username)
         {
             currentUser = users[i];
             indexOfUser = i;
@@ -720,7 +721,7 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     writeUsers("data/users.csv", users);
     writeBooks("data/books.csv", books);
 
-    addTransaction("data/transactions.csv", currentUser.studentId, bookToReturn.bookId, "RETURN");
+    addTransaction("data/transactions.csv", currentUser.userId, bookToReturn.bookId, "RETURN");
 }
 
 //common functions

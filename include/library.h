@@ -5,6 +5,7 @@
 #include "users.h"
 #include "utils.h"
 #include "logs.h"
+#include "auth.h"
 #include <vector>
 #include <string>
 using namespace std;

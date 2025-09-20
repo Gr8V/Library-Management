@@ -20,11 +20,12 @@ string sha256(const string unhashedPassword)
     return ss.str();
 }
 
-bool UserLogin(vector<User> &users, bool &isAdmin, string &username)
+bool UserLogin(vector<User> &users, bool &isAdmin, string &username, int &userId)
 {
     bool isLogin = false;
     bool isValidUser = false;
-    int userId = 0;
+    userId = 0;
+    User currentUser;
     string inputPasswd;
     const string adminPasswd = "qwerty";
 
@@ -35,55 +36,60 @@ bool UserLogin(vector<User> &users, bool &isAdmin, string &username)
 
         for (int i = 0; i < users.size(); i++)
         {
-            if (users[i].studentName == username)
+            if (users[i].userName == username)
             {
                 isValidUser = true;
-                userId = users[i].studentId;
+                currentUser = users[i];
+                userId = users[i].userId;
             }
         }
         
-        //checks if user is admin
-        if (username == "admin")
+        cout << "password: ";
+        cin >> inputPasswd;
+        if (!isValidUser && username == " ")
         {
-            cout << "password: ";
-            cin >> inputPasswd;
-            if (inputPasswd == adminPasswd)
+            cout << "UserName Can Not Be Empty";
+        }
+        else if (!isValidUser)
+        {
+            cout << "User Does Not Exist!!\n";
+        }
+        
+        else if (isValidUser && sha256(inputPasswd) == currentUser.hashedPasswd)
+        {
+            isLogin = true;
+            if (currentUser.role == "admin")
             {
-                cout << "Welocome Admin\n";
                 isAdmin = true;
-                isLogin = true;
+                cout << "Welcome Admin\n";
 
                 // login log (successful login for admin)
                 loginLog("data/login_logs.csv",userId,username,"LOGIN",true, "Successful Admin Login");
             }
-            else
+            else if (currentUser.role == "member")
             {
-                cout << "Wrong Password.\n";
-
+                cout << "Welcome " << currentUser.userName;
+                // login log (successful login for user)
+                loginLog("data/login_logs.csv",userId,username,"LOGIN",true, "Successful User Login");
+            }
+            
+            
+        }
+        else
+        {
+            cout << "Wrong Password!!\n";
+            if (currentUser.role == "admin")
+            {
                 // login log (unsuccessful login for admin)
                 loginLog("data/login_logs.csv",userId,username,"LOGIN", false, "Wrong Admin Password");
             }
+            else if (currentUser.role == "member")
+            {
+                // login log (unsuccessful login for user)
+                loginLog("data/login_logs.csv",userId,username,"LOGIN",false, "Not Valid User");
+            }
+            
         }
-        else if(username == " ")
-        {
-            cout << "UserName cannot be empty.\n";
-        }
-        else if(isValidUser)
-        {
-            cout << "Welcome " << username << '\n';
-            isLogin = true;
-
-            // login log (successful login for user)
-            loginLog("data/login_logs.csv",userId,username,"LOGIN",true, "Successful User Login");
-        }
-        else if (!isValidUser)
-        {
-            cout << "Not a Valid User.\n";
-
-            // login log (unsuccessful login for user)
-            loginLog("data/login_logs.csv",userId,username,"LOGIN",false, "Not Valid User");
-        }
-        
         cout << "\n";
     } while (isLogin == false);
     

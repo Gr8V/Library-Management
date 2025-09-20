@@ -21,12 +21,12 @@ vector<User> loadUsers(const string &filename)
         if (line.empty()) continue;
         
         vector<string> tokens = split(line, ',');
-        if(tokens.size() < 7) continue;
+        if(tokens.size() < 9) continue;
 
         
         User user;
-        user.studentId = safeStoi(tokens[0]);
-        user.studentName = tokens[1];
+        user.userId = safeStoi(tokens[0]);
+        user.userName = tokens[1];
         
         for (int i = 1; i <= 5; i++)
         {
@@ -41,6 +41,8 @@ vector<User> loadUsers(const string &filename)
             }
             
         }
+        user.role = tokens[tokens.size()-2];
+        user.hashedPasswd = tokens[tokens.size()-1];
         users.push_back(user);
     }
 
@@ -56,11 +58,11 @@ void writeUsers(const string &filename, const vector<User> &users)
         return;
     }
 
-    file << "studentId,studentName,book1,book2,book3Id,book4,book5\n";
+    file << "studentId,studentName,book1,book2,book3Id,book4,book5,role,hashedPassword\n";
 
     for (const auto &user : users)
     {
-        file << user.studentId << "," << user.studentName;
+        file << user.userId << "," << user.userName;
         for (int i = 0; i < 5; i++)
         {
             file << ",";
@@ -76,6 +78,8 @@ void writeUsers(const string &filename, const vector<User> &users)
             
             
         }
+        file << "," << user.role;
+        file << "," << user.hashedPasswd;
         file << "\n";
     }
     file.close();
