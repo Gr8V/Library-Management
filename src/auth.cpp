@@ -6,6 +6,7 @@
 #include <openssl/sha.h>
 using namespace std;
 
+
 string sha256(const string unhashedPassword)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
@@ -20,17 +21,14 @@ string sha256(const string unhashedPassword)
     return ss.str();
 }
 
-bool UserLogin(vector<User> &users, bool &isAdmin, string &username, int &userId)
+bool UserLogin(vector<User> &users, vector<Book> &books, string &username, int &userId)
 {
-    bool isLogin = false;
-    bool isValidUser = false;
-    userId = 0;
     User currentUser;
     string inputPasswd;
-    const string adminPasswd = "qwerty";
-
+    bool isLogin = false;
     do
     {
+        bool isValidUser = false;
         cout << "username: ";
         cin >> username;
 
@@ -43,50 +41,55 @@ bool UserLogin(vector<User> &users, bool &isAdmin, string &username, int &userId
                 userId = users[i].userId;
             }
         }
-        
-        cout << "password: ";
-        cin >> inputPasswd;
+
         if (!isValidUser && username == " ")
         {
-            cout << "UserName Can Not Be Empty";
+            cout << "UserName Can Not Be Empty\n";
         }
         else if (!isValidUser)
         {
             cout << "User Does Not Exist!!\n";
         }
-        
-        else if (isValidUser && sha256(inputPasswd) == currentUser.hashedPasswd)
+        else if (isValidUser)
         {
-            isLogin = true;
-            if (currentUser.role == "admin")
+            cout << "password: ";
+            cin >> inputPasswd;
+            if (currentUser.role == "admin" && sha256(inputPasswd) == currentUser.hashedPasswd)
             {
-                isAdmin = true;
+                isLogin = true;
                 cout << "Welcome Admin\n";
-
                 // login log (successful login for admin)
                 loginLog("data/login_logs.csv",userId,username,"LOGIN",true, "Successful Admin Login");
+                while (true)
+                {
+                    actions(true, books, users, username);
+                }
             }
-            else if (currentUser.role == "member")
+            else if (currentUser.role == "member" && sha256(inputPasswd) == currentUser.hashedPasswd)
             {
-                cout << "Welcome " << currentUser.userName;
+                isLogin = true;
+                cout << "Welcome " << currentUser.userName << '\n';
                 // login log (successful login for user)
                 loginLog("data/login_logs.csv",userId,username,"LOGIN",true, "Successful User Login");
+                while (true)
+                {
+                    actions(false, books, users, username);
+                }
             }
-            
-            
-        }
-        else
-        {
-            cout << "Wrong Password!!\n";
-            if (currentUser.role == "admin")
+            else
             {
-                // login log (unsuccessful login for admin)
-                loginLog("data/login_logs.csv",userId,username,"LOGIN", false, "Wrong Admin Password");
-            }
-            else if (currentUser.role == "member")
-            {
-                // login log (unsuccessful login for user)
-                loginLog("data/login_logs.csv",userId,username,"LOGIN",false, "Not Valid User");
+                cout << "Wrong Password!!\n";
+                if (currentUser.role == "admin")
+                {
+                    // login log (unsuccessful login for admin)
+                    loginLog("data/login_logs.csv",userId,username,"LOGIN", false, "Wrong Admin Password");
+                }
+                else if (currentUser.role == "member")
+                {
+                    // login log (unsuccessful login for user)
+                    loginLog("data/login_logs.csv",userId,username,"LOGIN",false, "Wrong User Password");
+                }
+            
             }
             
         }
@@ -95,4 +98,26 @@ bool UserLogin(vector<User> &users, bool &isAdmin, string &username, int &userId
     
     return isLogin;
 
+}
+
+void start()
+{
+    string username;
+    int userId = 0;
+
+    //Load Data
+    vector<User> users = loadUsers("data/users.csv");
+    vector<Book> books = loadBooks("data/books.csv");
+
+    //run programme
+    UserLogin(users, books, username, userId);
+    
+    //Save Data
+    writeBooks("data/books.csv", books);
+    writeUsers("data/users.csv", users);
+
+    // login log (successful logout)
+    loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful Logout");
+    
+    cout << '\n';
 }

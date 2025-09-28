@@ -10,9 +10,9 @@
 #include <string>
 using namespace std;
 
-bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users, const string &username);
-bool adminActions(vector<Book> &books, vector<User> &users);
-bool userActions(vector<Book> &books, vector<User> &users, const string &username);
+void actions(const bool isAdmin, vector<Book> &books, vector<User> &users, const string &username);
+void adminActions(vector<Book> &books, vector<User> &users, const string &username, const int &userId);
+void userActions(vector<Book> &books, vector<User> &users, const string &username, const int &userId);
 
 //admin functions
 void addbook(vector<Book> &books);

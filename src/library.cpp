@@ -10,34 +10,34 @@
 using namespace std;
 
 
-bool actions(const bool isAdmin, vector<Book> &books, vector<User> &users, const string &username)
+void actions(const bool isAdmin, vector<Book> &books, vector<User> &users, const string &username)
 {
+    int userId = 0;
+    for (int i = 0; i < users.size(); i++)
+        {
+            if (users[i].userName == username)
+            {
+                userId = users[i].userId;
+            }
+        }
+
     cout << "*********************************\n";
     cout << "*************Actions*************\n";
     cout << "*********************************\n";
     if (isAdmin)
     {
-        if (adminActions(books, users))
-        {
-            return true;
-        }
-        
+        adminActions(books, users, username, userId);
     }
     else if (!isAdmin)
     {
-        if (userActions(books, users, username))
-        {
-            return true;
-        }
-        
+        userActions(books, users, username, userId);
     }
-    
-    return false;
 }
-bool adminActions(vector<Book> &books, vector<User> &users)
+void adminActions(vector<Book> &books, vector<User> &users, const string &username, const int &userId)
 {
     int userInput = 0;
 
+    
     cout << "BOOKS -->\n";
     cout << "[1] Add Book\n";
     cout << "[2] Edit Book\n";
@@ -49,7 +49,8 @@ bool adminActions(vector<Book> &books, vector<User> &users)
     cout << "[7] View All Users\n";
     cout << "[8] Show Overdue Users\n";
     cout << "[9] Show Logs\n";
-    cout << "[10] Quit\n";
+    cout << "[10] Logout\n";
+    cout << "[11] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
     cout << '\n';
@@ -84,15 +85,23 @@ bool adminActions(vector<Book> &books, vector<User> &users)
         showLogs();
         break;
     case 10:
-        return true;
+        // login log (successful admin logout)
+        loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful Admin Logout");
+        cout << "\n<<<<<LOGGING OUT>>>>>\n";
+        start();
+        break;
+    case 11:
+        // login log (successful admin logout)
+        loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful Admin Logout");
+        cout << "\n<<<<<EXITING PROGRAM>>>>>\n";
+        std::exit(0); 
         break;
     default:
         cout << "Input Error: Enter a digit between 1-8.";
         break;
     }
-    return false;
 }
-bool userActions(vector<Book> &books, vector<User> &users, const string &username)
+void userActions(vector<Book> &books, vector<User> &users, const string &username, const int &userId)
 {
     int userInput = 0;
 
@@ -100,7 +109,8 @@ bool userActions(vector<Book> &books, vector<User> &users, const string &usernam
     cout << "[2] Return Book\n";
     cout << "[3] View All Book\n";
     cout << "[4] Search/Filter Books\n";
-    cout << "[5] Quit\n";
+    cout << "[5] Logout\n";
+    cout << "[6] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
     cout << '\n';
@@ -120,13 +130,21 @@ bool userActions(vector<Book> &books, vector<User> &users, const string &usernam
         searchAndFilterbooks(books, users, username);
         break;
     case 5:
-        return true;
+        // login log (successful user logout)
+        loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful User Logout");
+        cout << "\n<<<<<LOGGING OUT>>>>>\n";
+        start();
+        break;
+    case 6:
+        // login log (successful user logout)
+        loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful User Logout");
+        cout << "\n<<<<<EXITING PROGRAM>>>>>\n";
+        std::exit(0); 
         break;
     default:
         cout << "Input Error: Enter a digit between 1-3.";
         break;
     }
-    return false;
 }
 
 //admin functions
