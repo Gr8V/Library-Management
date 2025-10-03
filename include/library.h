@@ -28,6 +28,7 @@ void showLogs();
 //user functions
 void borrowBook(vector<Book> &books, vector<User> &users, const string &username);
 void returnBook(vector<Book> &books, vector<User> &users, const string &username);
+void changePassword(vector<User> &users, const string &username, const int &userId);
 
 //common functions
 void viewAllBooks(vector<Book> &books);

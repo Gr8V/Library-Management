@@ -117,8 +117,9 @@ void userActions(vector<Book> &books, vector<User> &users, const string &usernam
     cout << "[2] Return Book\n";
     cout << "[3] View All Book\n";
     cout << "[4] Search/Filter Books\n";
-    cout << "[5] Logout\n";
-    cout << "[6] Quit\n";
+    cout << "[5] Change Password\n";
+    cout << "[6] Logout\n";
+    cout << "[7] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
     //value error handling
@@ -145,12 +146,15 @@ void userActions(vector<Book> &books, vector<User> &users, const string &usernam
         searchAndFilterbooks(books, users, username);
         break;
     case 5:
+        changePassword(users, username, userId);
+        break;
+    case 6:
         // login log (successful user logout)
         loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful User Logout");
         cout << "\n<<<<<LOGGING OUT>>>>>\n";
         start();
         break;
-    case 6:
+    case 7:
         // login log (successful user logout)
         loginLog("data/login_logs.csv",userId,username,"LOGOUT",true, "Successful User Logout");
         cout << "\n<<<<<EXITING PROGRAM>>>>>\n";
@@ -872,6 +876,50 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     writeBooks("data/books.csv", books);
 
     addTransaction("data/transactions.csv", currentUser.userId, bookToReturn.bookId, "RETURN");
+}
+void changePassword(vector<User> &users, const string &username, const int &userId)
+{
+    cout << '\n';
+
+    string hashedInputPasswd;
+    string newPassword;
+
+    User currentUser;
+    int currentUserIndex = -1;
+    for (size_t i = 0; i < users.size(); i++)
+    {
+        if (users[i].userId == userId)
+        {
+            currentUser = users[i];
+            currentUserIndex = i;
+        }
+    }
+    if (currentUserIndex == -1)
+    {
+        cerr << "ERROR : User Does Not Exist.";
+    }
+    
+    cout << "Current Password : ";
+    cin >> hashedInputPasswd;
+    cout << '\n';
+    hashedInputPasswd = sha256(hashedInputPasswd);
+    if (hashedInputPasswd == currentUser.hashedPasswd)
+    {
+        cout << "New Passowrd : ";
+        cin >> newPassword;
+        cout << '\n';
+        currentUser.hashedPasswd = sha256(newPassword);
+    }
+    else if (hashedInputPasswd != currentUser.hashedPasswd)
+    {
+        cout << "Wrong Password!!!\n";
+        return;
+    }
+    
+    users[currentUserIndex] = currentUser;
+
+    //Save Data
+    writeUsers("data/users.csv", users);
 }
 
 //common functions
