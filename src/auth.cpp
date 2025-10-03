@@ -7,7 +7,7 @@
 using namespace std;
 
 
-string sha256(const string unhashedPassword)
+string sha256(const string &unhashedPassword)
 {
     unsigned char hash[SHA256_DIGEST_LENGTH];
     SHA256((unsigned char*)unhashedPassword.c_str(), unhashedPassword.size(), hash);
@@ -26,8 +26,16 @@ bool UserLogin(vector<User> &users, vector<Book> &books, string &username, int &
     User currentUser;
     string inputPasswd;
     bool isLogin = false;
+    int loginAttemps = 0;
     do
     {
+        if (loginAttemps >=5)
+        {
+            cout << "5 failed login attemps....\n";
+            cout << "Restart Application to try again.";
+            break;
+        }
+        
         bool isValidUser = false;
         cout << "username: ";
         cin >> username;
@@ -42,7 +50,7 @@ bool UserLogin(vector<User> &users, vector<Book> &books, string &username, int &
             }
         }
 
-        if (!isValidUser && username == " ")
+        if (!isValidUser && username.empty())
         {
             cout << "UserName Can Not Be Empty\n";
         }
@@ -91,7 +99,7 @@ bool UserLogin(vector<User> &users, vector<Book> &books, string &username, int &
                 }
             
             }
-            
+            loginAttemps++;
         }
         cout << "\n";
     } while (isLogin == false);
@@ -107,7 +115,17 @@ void start()
 
     //Load Data
     vector<User> users = loadUsers("data/users.csv");
+    if (users.empty())
+    {
+        cerr << "FATAL ERROR: there are no users in the database..";
+    }
+    
     vector<Book> books = loadBooks("data/books.csv");
+    if (books.empty())
+    {
+        cerr << "FATAL ERROR: there are no books in the database..";
+    }
+    
 
     //run programme
     UserLogin(users, books, username, userId);

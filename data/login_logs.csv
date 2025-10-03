@@ -159,3 +159,32 @@ LOGIN, 1, student, 2025-09-28 19:22:43, 0, Not Valid User
 LOGIN, 1, student, 2025-09-28 19:22:51, 0, Not Valid User
 LOGIN, 1, student, 2025-09-28 19:23:27, 1, Successful User Login
 LOGOUT, 1, student, 2025-09-28 19:23:30, 1, Successful User Logout
+
+LOGIN, 2, vansh, 2025-10-03 15:10:24, 0, Wrong Admin Password
+LOGIN, 2, vansh, 2025-10-03 15:10:30, 0, Wrong Admin Password
+LOGIN, 2, vansh, 2025-10-03 15:10:32, 0, Wrong Admin Password
+LOGIN, 2, vansh, 2025-10-03 15:10:35, 0, Wrong Admin Password
+LOGIN, 2, vansh, 2025-10-03 15:10:36, 0, Wrong Admin Password
+LOGOUT, 2, vansh, 2025-10-03 15:10:36, 1, Successful Logout
+
+LOGIN, 2, vansh, 2025-10-03 21:54:23, 1, Successful Admin Login
+LOGOUT, 2, vansh, 2025-10-03 21:54:30, 1, Successful Admin Logout
+
+LOGIN, 3, ruhee, 2025-10-03 22:12:56, 1, Successful User Login
+LOGIN, 3, ruhee, 2025-10-03 22:17:33, 1, Successful User Login
+LOGIN, 3, ruhee, 2025-10-03 22:18:08, 1, Successful User Login
+LOGIN, 3, ruhee, 2025-10-03 22:19:53, 1, Successful User Login
+LOGIN, 3, ruhee, 2025-10-03 22:20:25, 1, Successful User Login
+LOGIN, 3, ruhee, 2025-10-03 22:20:55, 1, Successful User Login
+LOGIN, 2, vansh, 2025-10-03 22:22:29, 1, Successful Admin Login
+LOGIN, 2, vansh, 2025-10-03 23:20:16, 1, Successful Admin Login
+LOGOUT, 2, vansh, 2025-10-03 23:21:06, 1, Successful Admin Logout
+
+LOGIN, 2, vansh, 2025-10-03 23:22:59, 1, Successful Admin Login
+LOGOUT, 2, vansh, 2025-10-03 23:23:06, 1, Successful Admin Logout
+
+LOGIN, 2, vansh, 2025-10-03 23:26:37, 1, Successful Admin Login
+LOGOUT, 2, vansh, 2025-10-03 23:26:54, 1, Successful Admin Logout
+
+LOGIN, 3, ruhee, 2025-10-03 23:26:59, 1, Successful User Login
+LOGOUT, 3, ruhee, 2025-10-03 23:28:23, 1, Successful User Logout

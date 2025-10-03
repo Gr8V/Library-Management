@@ -10,7 +10,7 @@
 using namespace std;
 
 
-string sha256(const string unhashedPassword);
+string sha256(const string &unhashedPassword);
 
 bool UserLogin(vector<User> &users,vector<Book> &books, string &username, int &userId);
 

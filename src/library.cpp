@@ -6,6 +6,7 @@
 #include <ctime>
 #include <sstream>
 #include <iomanip>
+#include <limits>
 
 using namespace std;
 
@@ -53,6 +54,13 @@ void adminActions(vector<Book> &books, vector<User> &users, const string &userna
     cout << "[11] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     cout << '\n';
     cout << "**************************\n";
     switch (userInput)
@@ -113,6 +121,13 @@ void userActions(vector<Book> &books, vector<User> &users, const string &usernam
     cout << "[6] Quit\n";
     cout << "What Action Do You Want To Perform: ";
     cin >> userInput;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     cout << '\n';
     cout << "**************************\n";
     switch (userInput)
@@ -153,17 +168,33 @@ void addbook(vector<Book> &books)
     Book newBook;
     cout << "Enter Title : ";
     getline(cin >> ws, newBook.title);
+    newBook.title = trim(newBook.title);
     titleCase(newBook.title);
 
     cout << "Enter Author : ";
     getline(cin, newBook.author);
+    newBook.author = trim(newBook.author);
     titleCase(newBook.author);
 
     cout << "Enter Year : ";
     cin >> newBook.year;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
 
     cout << "Enter Units : ";
     cin >> newBook.units;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     
     //genres
     int genreNum = 1;
@@ -174,6 +205,7 @@ void addbook(vector<Book> &books)
         string genre;
         cout << "Enter Genre-" << genreNum << " (leave blank to stop): ";
         getline(cin, genre);
+        genre = trim(genre);
         if (genre.empty())
         {
             break;
@@ -198,6 +230,7 @@ void editbooks(vector<Book> &books)
     int toEdit;
     cout << "Enter Title Of Book To Edit : ";
     getline(cin >> ws, bookTitle);
+    bookTitle = trim(bookTitle);
     titleCase(bookTitle);
     for (int i = 0; i < books.size(); i++)
     {
@@ -221,6 +254,13 @@ void editbooks(vector<Book> &books)
     cout << "[5] genre\n";
     cout << ">>";
     cin >> toEdit;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     cout << "***********************\n";
     string titleEdit, authorEdit;
     int yearEdit, unitsEdit;
@@ -229,23 +269,39 @@ void editbooks(vector<Book> &books)
     case 1:
         cout << "Enter New Title : ";
         getline(cin >> ws, titleEdit);
+        titleEdit = trim(titleEdit);
         titleCase(titleEdit);
         bookToEdit.title = titleEdit;
         break;
     case 2:
         cout << "Enter New Author Name : ";
         getline(cin >> ws, authorEdit);
+        authorEdit = trim(authorEdit);
         titleCase(authorEdit);
         bookToEdit.author = authorEdit;
         break;
     case 3:
         cout << "Enter New Publishing Year : ";
         cin >> yearEdit;
+        //value error handling
+        if (cin.fail()) {
+            cout << "Invalid input! Not an integer.\n";
+            cin.clear(); // clear error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+            return;
+        }
         bookToEdit.year = yearEdit;
         break;
     case 4:
         cout << "Enter Units : ";
         cin >> unitsEdit;
+        //value error handling
+        if (cin.fail()) {
+            cout << "Invalid input! Not an integer.\n";
+            cin.clear(); // clear error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+            return;
+        }
         bookToEdit.units = unitsEdit;
         break;
     case 5:
@@ -256,6 +312,13 @@ void editbooks(vector<Book> &books)
         cout << "[2] Remove Genre\n";
         cout << ">>";
         cin >> genEdit;
+        //value error handling
+        if (cin.fail()) {
+            cout << "Invalid input! Not an integer.\n";
+            cin.clear(); // clear error flag
+            cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+            return;
+        }
         switch (genEdit)
         {
         case 1:
@@ -277,6 +340,13 @@ void editbooks(vector<Book> &books)
             }
             cout << "Which Do You Want To Remove : ";
             cin >> genToRemove;
+            //value error handling
+            if (cin.fail()) {
+                cout << "Invalid input! Not an integer.\n";
+                cin.clear(); // clear error flag
+                cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+                return;
+            }
             bookToEdit.genres.erase(bookToEdit.genres.begin()+(genToRemove-1));
             break;
         default:
@@ -309,6 +379,13 @@ void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string
     cout << "[7] show Borrowed(By User)\n";
     cout << ">>";
     cin >> howToSearch;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     cout << "\n\n";
 
     switch (howToSearch)
@@ -317,6 +394,7 @@ void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string
         string bookTitle;
         cout << "Enter Title: ";
         getline(cin >> ws, bookTitle);
+        bookTitle = trim(bookTitle);
         titleCase(bookTitle);
         for (int i = 0; i < books.size(); i++)
         {
@@ -450,6 +528,10 @@ void searchAndFilterbooks(vector<Book> &books, vector<User> &users, const string
         cout << "BookId : " << book.bookId << '\n';
         cout << '\n';
     }
+    if (booksSearched.empty())
+    {
+        cout << "NO RESULTS FOUND!!!\n";
+    }
 }
 void addUser(vector<User> &users)
 {
@@ -475,6 +557,7 @@ void addUser(vector<User> &users)
     newUser.userName = newUserName;
     newUser.hashedPasswd = tempUserPasswd;
     users.push_back(newUser);
+    cout << "User Added!\n";
 
     //Save Data
     writeUsers("data/users.csv", users);
@@ -483,10 +566,16 @@ void removeUser(vector<User> &users)
 {
     int userIdToRemove;
     User userToRemove;
-    bool wrongInput = false;
+    bool isRemoved;
     cout << "Enter User ID To Remove : ";
     cin >> userIdToRemove;
-    
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
 
     for (size_t i = 0; i < users.size(); i++)
     {
@@ -494,9 +583,16 @@ void removeUser(vector<User> &users)
         {
             users.erase(users.begin()+i);
             cout << "User Removed Successfully";
+            isRemoved = true;
         }
     }
     
+    if (!isRemoved)
+    {
+        cerr << "ERROR : No User With that ID exists";
+    }
+    
+
     //Save Data
     writeUsers("data/users.csv", users);
 }
@@ -545,6 +641,13 @@ void showLogs()
     cout << "[1] Transactions Logs\n";
     cout << "[2] Loging Logs\n";
     cin >> whatToDo;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     if (whatToDo == 1)
     {
         ifstream file("data/transactions.csv");
@@ -588,7 +691,7 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
     const int DAYS_CAN_BORROW_FOR = 15;
 
     int borrowBookId;
-    int indexToBorrow;
+    int indexToBorrow = -1;
     int indexOfUser;
     Book bookToBorrow;
     User currentUser;
@@ -601,6 +704,7 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
             indexOfUser = i;
         }
     }
+    
 
     //check if user can borrow(hasn't already borrowed 5 books)
     if (currentUser.BorrowedBooks.size() >= 5)
@@ -614,7 +718,13 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
     //user input for bookId
     cout << "Enter The Id Of Book You Want To Borrow : ";
     cin >> borrowBookId;
-
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     //gets book to borrow
     for (size_t i = 0; i < books.size(); i++)
     {
@@ -624,13 +734,29 @@ void borrowBook(vector<Book> &books, vector<User> &users, const string &username
             indexToBorrow = i;
         }
     }
+    //check if the book exists in the library.
+    if (indexToBorrow == -1)
+    {
+        cerr << "ERROR : The Book Does Not Exist";
+    }
     //checks if book is out of stock
     if (bookToBorrow.units == 0)
     {
-        cout << "The Book Is Out Of Stock\n\n";
+        cerr << "The Book Is Out Of Stock\n\n";
         return;
     }
 
+    //check if user already have the book he asked to borrow
+    for (size_t i = 0; i < currentUser.BorrowedBooks.size(); i++)
+    {
+        if (currentUser.BorrowedBooks[i].bookId == bookToBorrow.bookId)
+        {
+            cout << "You Already Have This Book...";
+            return;
+        }
+        
+    }
+    
     //Gets current date and due date
     string currentDate;
     time_t now = time(nullptr);
@@ -705,6 +831,13 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
     //gets user input
     cout << ">> ";
     cin >> indexOfBorrowed;
+    //value error handling
+    if (cin.fail()) {
+        cout << "Invalid input! Not an integer.\n";
+        cin.clear(); // clear error flag
+        cin.ignore(numeric_limits<streamsize>::max(), '\n'); // discard bad input
+        return;
+    }
     indexOfBorrowed--;
 
     //calulates fine(if any)
@@ -725,7 +858,6 @@ void returnBook(vector<Book> &books, vector<User> &users, const string &username
             bookToReturn = books[i];
             indexOfBook = i;
         }
-        
     }
     currentUser.BorrowedBooks.erase(currentUser.BorrowedBooks.begin()+indexOfBorrowed);
     bookToReturn.units++;

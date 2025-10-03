@@ -7,6 +7,7 @@
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <cctype>
 
 using namespace std;
 
@@ -21,6 +22,7 @@ vector<string> split(const string &s, char delimiter)
     }
     return tokens;
 }
+
 int safeStoi(const string &s, int defaultVal)
 {
     if (s.empty()) return defaultVal;
@@ -40,6 +42,7 @@ void titleCase(string &title)
         else if (cap) { c = toupper(c); cap = false; }
     }
 }
+
 int fineCalculator(const string &dueDate)
 {
     const int FINE_PER_DAY = 10;
@@ -72,4 +75,23 @@ int fineCalculator(const string &dueDate)
     int daysBetween = abs(difftime(timeCurrent, timeDue)) / (60*60*24);
 
     return daysBetween*FINE_PER_DAY;
+}
+
+std::string trim(const std::string& s)
+{
+    size_t start = 0;
+    while (start < s.size() && std::isspace(static_cast<unsigned char>(s[start]))) {
+        ++start;
+    }
+
+    if (start == s.size()) {
+        return ""; // string is all whitespace
+    }
+
+    size_t end = s.size() - 1;
+    while (end > start && std::isspace(static_cast<unsigned char>(s[end]))) {
+        --end;
+    }
+
+    return s.substr(start, end - start + 1);
 }

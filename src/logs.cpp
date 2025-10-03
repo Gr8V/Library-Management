@@ -50,6 +50,14 @@ void loginLog(const string &fileName, int userID, string userName, string action
     }
     else
     {
-        cout << "ERROR : Unable to log login. file not open.";
+        if (action == "LOGIN")
+        {
+            cout << "ERROR : Unable to log login. file not open.";
+        }
+        else if (action == "LOGOUT")
+        {
+            cout << "ERROR : Unable to log logout. file not open.";
+        }
+        
     }
 }
