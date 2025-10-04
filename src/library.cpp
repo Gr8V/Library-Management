@@ -326,14 +326,12 @@ void editbooks(vector<Book> &books)
         switch (genEdit)
         {
         case 1:
-            bool enteringGen;
-            do
             {
                 string newGen;
                 cout << "Enter New Genre : ";
                 cin >> newGen;
                 bookToEdit.genres.push_back(newGen);
-            } while (enteringGen);
+            }
             
             break;
         case 2:
